@@ -4,7 +4,7 @@
       <section id="breadcrumb">
          <div class="container">
             <div class="breadcrumb_inner">
-               <Span><a href="javascript:void(0)">Home&nbsp;&nbsp;>>&nbsp;&nbsp;</a>Search Results</Span>
+               <Span><a href="javascript:void(0)">Home&nbsp;&nbsp;>>&nbsp;&nbsp;</a>Search Result</Span>
             </div>
          </div>
       </section>
@@ -78,7 +78,7 @@
                           </div>
                           </div>
                           <div class="bio-desk">
-                             <a href="#">My Wallet <i class="fa fa-chevron-right" aria-hidden="true"></i></a> 
+                             <a href="#">My Wallet<i class="fa fa-chevron-right" aria-hidden="true"></i></a> 
                           </div>
                       </div>
                   </div>
