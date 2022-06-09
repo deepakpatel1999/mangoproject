@@ -10,8 +10,7 @@ use DB;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
-
-
+use Validator;
 class HomeController extends Controller
 {
   /**
@@ -183,10 +182,17 @@ class HomeController extends Controller
   //==================Insert Inspiration===================//  
   public function  create_data(Request $request)
   {
-    $request->validate([
+    $rules = [
       'title' => 'required',
+      'files' => 'required',
 
-    ]);
+    ];
+
+    $input     = $request->all();
+    $validator = Validator::make($input, $rules);
+    if ($validator->fails()) {
+      return response()->json(['errors'=>$validator->errors()->all()]);
+    }
     if ($request->file('files')) {
       $imagePath = $request->file('files');
       $imageName = time() . '.' . $imagePath->getClientOriginalName();
@@ -199,9 +205,7 @@ class HomeController extends Controller
     $created_at = date("Y-m-d H:i:s");
     $data = Inspiration::insert(['title' => $request->title, 'image' => $imageName, 'created_at' => $created_at]);
 
-    return json_encode(array(
-      "statusCode" => 200
-    ));
+    return response()->json(['success'=>'Record is successfully added']);
   }
   //==================Edit Inspiration===================//  
   public function  edit_data($id)
