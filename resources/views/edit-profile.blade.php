@@ -4,7 +4,7 @@
       <section id="breadcrumb">
          <div class="container">
             <div class="breadcrumb_inner">
-               <Span><a href="javascript:void(0)">Home&nbsp;&nbsp;>>&nbsp;&nbsp;</a>Search Results</Span>
+               <Span><a href="javascript:void(0)">Home&nbsp;&nbsp;>>&nbsp;&nbsp;</a>Search Result</Span>
             </div>
          </div>
       </section>
@@ -14,7 +14,7 @@
          </div>
       </section>
       <main id="main">
-         <!-- ======= Filter Section start ======= -->
+         <!-- ======= Filter Section Start ======= -->
          <div id="page">
             <div class="container bootstrap snippets bootdey">
 <div class="row">
@@ -43,7 +43,7 @@
               <li>
               	<div class="dropdown">
               	<a href="#" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false"> <i class="fa fa-users" aria-hidden="true"></i> Community</a>
+          aria-haspopup="true" aria-expanded="false"> <i class="fa fa-users" aria-hidden="true"></i>Community</a>
           	<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
 			    <a class="dropdown-item" href="#!">- How to Score Points</a>
 			    <a class="dropdown-item" href="#!">- Invite Friends</a>
@@ -73,7 +73,7 @@
                           		<i class="fa fa-credit-card" aria-hidden="true"></i>
                           	</div>
                           	<div class="widget_info">
-                          	  <p>Balance</p>
+                          	  <p> Balance</p>
                               <h4 class="red">AED 20</h4>
                           </div>
                           </div>
