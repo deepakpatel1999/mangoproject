@@ -1,0 +1,401 @@
+/*---------------breadcrumb css-----------------*/
+
+section#breadcrumb{
+background: #f2f2f2;
+padding: 10px 0px;
+}
+.breadcrumb_inner a {
+    color: #333;
+    font-weight: 600;
+}
+.breadcrumb_inner span {
+    color: #f54848;
+    font-weight: 600;
+    font-family: 'Segoe UI';
+    font-size: 14px;
+}
+
+/*---------------event details left css-----------------*/
+div#page {
+    margin-top: 30px;
+}
+.events_slider img {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+.events_primary_detail, .event_secondry_detail, .event_third_detail, .event_widget_first, .event_review_widget, .event_schedule_widget  {
+    box-shadow: -1px 1px 10px -2px #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 30px 0 0;
+}
+.share_widget, .related_act_widget{
+	box-shadow: -1px 1px 10px -2px #ccc;
+	border-radius: 5px;
+	margin-bottom: 30px;
+	padding: 15px;
+}
+.event_secondry_detail{
+	background: #f3f3f3;
+}
+.primary_inner {
+    justify-content: space-between;
+}
+.eve_pri_headings h3 {
+    font-size: 26px;
+    font-family: 'Segoe UI';
+    color: #0f1214;
+    margin-bottom: 5px;
+}
+span.eve_location {
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+}
+.tags {
+    background: #4bbfba;
+    margin-right: 5px;
+    padding: 0px 8px 2px 20px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px;
+}
+.eve_tags {
+    display: flex;
+    margin: 20px 0 15px;
+}
+.eve_tag.deal.tags {
+    background: #f54848;
+}
+.eve_booking_btn button, .review_inputs button {
+    background: #f54848;
+    border: transparent;
+    color: #fff;
+    font-family: 'Segoe UI';
+    font-size: 19px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 8px 19px;
+}
+.events_period {
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+    color: #f54848;
+    font-family: 'Segoe UI';
+}
+.share_section, .schedule_section {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0px 10px;
+    margin: 15px 0px;
+}
+.share_ui a {
+    font-size: 14px;
+    width: 71px;
+    display: inline-block;
+    margin: 0 20px;
+    line-height: 15px;
+    color: #868686;
+}
+.share_ui a img {
+    width: 31px;
+    height: 31px;
+    margin-bottom: 6px;
+}
+.share_ui:after {
+    content: '|';
+    font-size: 38px;
+    position: absolute;
+    color: #ccc;
+    font-weight: 100;
+}
+.read_more_content a {
+    color: #4bbfba;
+    font-size: 16px;
+    font-weight: 600;
+    padding-left: 20px;
+    position: relative;
+}
+.read_more_content a:before {
+    content: '';
+    position: absolute;
+    background: url(../../assets/img/event-dt/read_ic.png) no-repeat;
+    width: 16px;
+    height: 20px;
+    left: 0;
+    top: 2px;
+}
+.event_dis_img img {
+    width: 105px;
+    height: 100px;
+    margin-right: 20px;
+}
+span.dis_sub_text {
+    font-size: 18px;
+    display: inline-block;
+    width: 100%;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+.event_dis_content a {
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+}
+.event_dis_content h3 {
+    color: #f54848;
+    margin-bottom: 5px;
+}	
+.event_activity {
+    width: 80%;
+}
+.event_act_price {
+    width: 20%;
+    text-align: right;
+}
+.event_buy_tag {
+    color: #f54848;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+.event_buy_tag:before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 0;
+    background: url(../../assets/img/event-dt/watch_ic.png) no-repeat;
+    margin-top: 4px;
+}
+.event_price {
+    font-size: 18px;
+    font-family: 'Segoe UI';
+    font-weight: 600;
+}
+span.dis_price {
+    margin-right: 15px;
+}
+span.dis_price {
+    margin-right: 15px;
+    text-decoration: line-through;
+    color: #333;
+    font-weight: 600;
+}
+span.main_price {
+    color: #f54848;
+}
+.event_activity_part {
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+}
+.event_third_detail div:last-child {
+    border-bottom: transparent;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.widget_first h3, .widget_second h3, .widget_third h3 {
+    font-size: 26px;
+    font-family: 'Segoe UI';
+    padding-left: 30px;
+    position: relative;
+}
+.widget_first h3:before {
+    content: '';
+    position: absolute;
+    background: url(../../assets/img/event-dt/act_ic.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    left: 0;
+    top: 5px;
+}
+.widget_second h3:before {
+    content: '';
+    position: absolute;
+    background: url(../../assets/img/event-dt/review_ic.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    left: -2px;
+    top: 1px;
+}
+.widget_third h3:before {
+    content: '';
+    position: absolute;
+    background: url(../../assets/img/event-dt/review_ic.png) no-repeat;
+    width: 30px;
+    height: 30px;
+    left: -2px;
+    top: 1px;
+}
+.user_avtar {
+    margin-right: 15px;
+}
+span.user_name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    font-family: 'Segoe UI';
+}
+.user_comment .review ul {
+    float: left;
+}
+.review {
+    margin-top: -9px;
+}
+.user_review_sec {
+    margin-bottom: 10px;
+}
+.user_reviews.d-flex {
+    margin-bottom: 15px;
+}
+.card.card-body.review_body {
+    padding-left: 0;
+}
+.reveiw_form_section label {
+    font-size: 17px;
+    font-weight: 600;
+    color: #333;
+    width: 18%;
+}
+.reveiw_form_section {
+    margin: 30px 0;
+}
+.review_inputs {
+    margin-bottom: 30px;
+}
+.review_inputs.d-flex {
+    align-items: center;
+}
+.review_inputs .review i {
+    font-size: 21px;
+}
+.review_inputs.d-flex input:before {
+    width: 173px;
+    height: 43px;
+    background-color: #e5e5e5;
+    content: 'Upload Now';
+    position: absolute;
+    text-align: center;
+    color: #333;
+    padding: 6px;
+    font-weight: 600;
+    font-size: 17px;
+    background-image: url(../../assets/img/event-dt/camera_ic.png);
+    background-repeat: no-repeat;
+    background-position: 5px 8px;
+}
+.review_inputs.d-flex input {
+    width: 153px;
+    position: relative;
+    height: 39px;
+    border-radius: 5px;
+}
+.review_inputs textarea {
+    width: 81%;
+    height: 138px;
+    border: transparent;
+    box-shadow: -1px 1px 10px -2px #ccc;
+    padding: 10px;
+}
+.schedule_section .share_ui {
+    width: 100%;
+}
+.schedule_section div a {
+    width: auto;
+}
+.schedule_section div:after {
+    content:'' !important;
+}
+.schedule_section {
+    margin-top: 30px;
+}
+.widget_heading.widget_head_red h3 {
+    font-size: 24px;
+    background: #f54848;
+    display: inline-block;
+    color: #fff;
+    padding: 3px 5px 9px 11px;
+    font-family: 'Segoe UI';
+    position: relative;
+    left: -15px;
+}
+.widget_heading.widget_head_blue h3 {
+    font-size: 24px;
+    background: #4bbfba;
+    display: inline-block;
+    color: #fff;
+    padding: 3px 5px 9px 11px;
+    font-family: 'Segoe UI';
+    position: relative;
+    left: -15px;
+}
+.widget_heading.widget_head_blue h3:after {
+    background: url(../../assets/img/event-dt/widget_border_blue.png) no-repeat;
+    right: -30px;
+    width: 50px;
+    height: 41px;
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: -2;
+}
+.widget_heading.widget_head_red h3:after {
+    background: url(../../assets/img/event-dt/widget_border.png) no-repeat;
+    right: -30px;
+    width: 50px;
+    height: 41px;
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: -2;
+}
+.media_share ul {
+    padding: 0;
+    margin-top: 20px;
+}
+.media_share ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+.rel_events {
+    margin: 20px 0px;
+}
+.rel_events {
+    margin: 20px 0px 30px;
+    background: #fff;
+    box-shadow: -1px 1px 10px -2px #ccc;
+    border-radius: 15px;
+}	
+.rel_details {
+    padding: 15px;
+}
+.rel_details h4 {
+    font-family: 'Segoe UI';
+    font-size: 20px;
+    color: #0f1214;
+}
+.rel_events img {
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+}
+.rel_details a {
+    color: #4bbfba;
+    padding-left: 20px;
+    position: relative;
+}
+.rel_details a:before {
+    content: '';
+    background: url(../../assets/img/event-dt/loc_ic.png) no-repeat;
+    width: 18px;
+    height: 22px;
+    position: absolute;
+    left: 0px;
+    top: 2px;
+}
