@@ -103,27 +103,27 @@
         // if (title_err || file_err) {
         //     return false;
         // } else {
-            true;
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('create-data') }}",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    jQuery.each(data.errors, function(key, value) {
-                        jQuery('.alert-danger').show();
-                        jQuery('.alert-danger').append('<p>' + value + '</p>');
-                    });
+        true;
+        var formData = new FormData(this);
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('create-data') }}",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                jQuery.each(data.errors, function(key, value) {
+                    jQuery('.alert-danger').show();
+                    jQuery('.alert-danger').append('<p>' + value + '</p>');
+                });
 
-                    // console.log(dataResult);
-                    // var dataResult = JSON.parse(dataResult);
-                    // alert('Submit Succssfully');
-                    // window.location = "{{ url('inspiration') }}";
-                },
-            });
+                // console.log(dataResult);
+                // var dataResult = JSON.parse(dataResult);
+                // alert('Submit Succssfully');
+                // window.location = "{{ url('inspiration') }}";
+            },
+        });
         // }
     }));
 </script>

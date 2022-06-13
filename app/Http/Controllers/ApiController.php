@@ -23,6 +23,7 @@ class ApiController extends Controller
 
     ];
 
+
     $input     = $request->all();
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
@@ -39,11 +40,13 @@ class ApiController extends Controller
       die();
     }
 
-    $logindata = User::Select('id', 'email', 'name')->where('email', $request->email)->orwhere('password', $request->password)->first();
-    $id = $logindata->id;
+    $user = User::Select('id', 'email', 'name')->where('email', $request->email)->orwhere('password', $request->password)->first();
+    $id = $user->id;
+    $user = Auth::user();
+    $dataa['token'] = Auth::user()->createToken('auth_token')->plainTextToken;
     $dataa['id'] = "$id";
-    $dataa['email'] = $logindata->email;
-    $dataa['username'] = $logindata->name;
+    $dataa['email'] = $user->email;
+    $dataa['username'] = $user->name;
     echo json_encode(array('status' => 'true', 'data' => $dataa, 'message' => 'User Login Successfully'));
     die();
   }
@@ -51,6 +54,7 @@ class ApiController extends Controller
   //================ sIGN UP====================//
   public function signup(Request $request)
   {
+
     $rules = [
       'name' => 'required',
       'email'    => 'unique:users|required',
@@ -82,10 +86,11 @@ class ApiController extends Controller
     $data_user = array('name' => $data['name'], 'email' => $data['email'], 'password' => bcrypt($data['password']));
 
     $user = User::create($data_user);
-
+    $token = $user()->createToken('auth_token')->plainTextToken;
+    //$dataaa['token'] = $user()->createToken('auth_token')->plainTextToken;
     if ($user) {
 
-      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'User Register Successfully'));
+      return response()->json(array('status' => 'true', 'data' => $token, 'message' => 'User Register Successfully'));
 
       die();
     } else {
@@ -99,6 +104,7 @@ class ApiController extends Controller
   //================ inspiration get data====================//
   public function inspiration_get_data(Request $request)
   {
+   
     $data = Inspiration::orderBy('id', 'desc')->get();
     if ($data) {
       return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'successfully get data'));

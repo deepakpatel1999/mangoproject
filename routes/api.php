@@ -22,18 +22,21 @@ Route::post('/login', [App\Http\Controllers\ApiController::class, 'login'])->nam
 
 Route::post('/signup', [App\Http\Controllers\ApiController::class, 'signup'])->name('signup');
 
-Route::get('/inspirationp-get-data', [App\Http\Controllers\ApiController::class, 'inspiration_get_data'])->name('inspiration-get-data');
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
-Route::post('/inspirationp-insert-data', [App\Http\Controllers\ApiController::class, 'inspiration_insert_data'])->name('inspiration-insert-data');
+    Route::get('/inspirationp-get-data', [App\Http\Controllers\ApiController::class, 'inspiration_get_data'])->name('inspiration-get-data');
+ 
+    Route::post('/inspirationp-insert-data', [App\Http\Controllers\ApiController::class, 'inspiration_insert_data'])->name('inspiration-insert-data');
 
-Route::post('/inspirationp-update-data', [App\Http\Controllers\ApiController::class, 'inspiration_update_data'])->name('inspiration-update-data');
+    Route::post('/inspirationp-update-data', [App\Http\Controllers\ApiController::class, 'inspiration_update_data'])->name('inspiration-update-data');
 
-Route::post('/inspirationp-delete-data', [App\Http\Controllers\ApiController::class, 'inspiration_delete_data'])->name('inspiration-delete-data');
+    Route::post('/inspirationp-delete-data', [App\Http\Controllers\ApiController::class, 'inspiration_delete_data'])->name('inspiration-delete-data');
 
-Route::get('/category-get-data', [App\Http\Controllers\ApiController::class, 'category_get_data'])->name('category-get-data');
+    Route::get('/category-get-data', [App\Http\Controllers\ApiController::class, 'category_get_data'])->name('category-get-data');
 
-Route::post('/category-delete-data', [App\Http\Controllers\ApiController::class, 'category_delete_data'])->name('category-delete-data');
+    Route::post('/category-delete-data', [App\Http\Controllers\ApiController::class, 'category_delete_data'])->name('category-delete-data');
 
-Route::post('/category-insert-data', [App\Http\Controllers\ApiController::class, 'category_insert_data'])->name('category-insert-data');
+    Route::post('/category-insert-data', [App\Http\Controllers\ApiController::class, 'category_insert_data'])->name('category-insert-data');
 
-Route::post('/category-update-data', [App\Http\Controllers\ApiController::class, 'category_update_data'])->name('category-update-data');
+    Route::post('/category-update-data', [App\Http\Controllers\ApiController::class, 'category_update_data'])->name('category-update-data');
+});

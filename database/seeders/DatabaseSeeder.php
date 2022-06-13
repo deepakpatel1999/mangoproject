@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\PermissionSeeder;
+use Database\Seeders\CreateUsersSeeder;
+use Database\Seeders\CategoryTableSeeder;
+use Database\Seeders\InspirationSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         \App\Models\User::factory(2)->create();
+         \App\Models\User::factory(10)->create();
+        $this->call(CreateUsersSeeder::class);
+        $this->call(CategoryTableSeeder::class);
+        $this->call(InspirationSeeder::class);
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
     }
