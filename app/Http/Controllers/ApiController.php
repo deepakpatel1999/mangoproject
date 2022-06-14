@@ -9,10 +9,16 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use Validator;
+use App\Http\Resources\Category as CategoryResource;
+use App\Http\Resources\Inspiration as InspirationResource;
 
-class ApiController extends Controller
+
+
+
+class ApiController extends BaseController
 {
   //================ Login =================//
   public function login(Request $request)
@@ -23,20 +29,21 @@ class ApiController extends Controller
 
     ];
 
-
     $input     = $request->all();
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
       $result['id'] = '';
       $result['email'] = '';
-      return response()->json(['success' => 'false', 'data' => $result, 'message' => "Please enter all fields"]);
+      //return response()->json(['success' => 'false', 'data' => $result, 'message' => "Please enter all fields"]);
+      return $this->sendError('Please enter all fields.', $validator->errors());
       die();
     }
 
     if (!auth()->attempt($request->all())) {
       $result['id'] = '';
       $result['email'] = '';
-      return response(['status' => 'false', 'data' => $result, 'message' => 'Invalid Credentials']);
+      //return response(['status' => 'false', 'data' => $result, 'message' => 'Invalid Credentials']);
+      return $this->sendError('Invalid Credentials.', $validator->errors());
       die();
     }
 
@@ -47,7 +54,8 @@ class ApiController extends Controller
     $dataa['id'] = "$id";
     $dataa['email'] = $user->email;
     $dataa['username'] = $user->name;
-    echo json_encode(array('status' => 'true', 'data' => $dataa, 'message' => 'User Login Successfully'));
+    // echo json_encode(array('status' => 'true', 'data' => $dataa, 'message' => 'User Login Successfully'));
+    return $this->sendResponse($dataa, 'User Login successfully.');
     die();
   }
 
@@ -78,8 +86,8 @@ class ApiController extends Controller
 
     if ($validator->fails()) {
 
-      return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
-
+      //return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
 
@@ -87,16 +95,16 @@ class ApiController extends Controller
 
     $user = User::create($data_user);
     $token = $user()->createToken('auth_token')->plainTextToken;
-    //$dataaa['token'] = $user()->createToken('auth_token')->plainTextToken;
+
     if ($user) {
 
-      return response()->json(array('status' => 'true', 'data' => $token, 'message' => 'User Register Successfully'));
-
+      //return response()->json(array('status' => 'true', 'data' => $token, 'message' => 'User Register Successfully'));
+      return $this->sendResponse($data_user, 'User register successfully.');
       die();
     } else {
 
-      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
-
+      //return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
   }
@@ -104,13 +112,15 @@ class ApiController extends Controller
   //================ inspiration get data====================//
   public function inspiration_get_data(Request $request)
   {
-   
+
     $data = Inspiration::orderBy('id', 'desc')->get();
     if ($data) {
-      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'successfully get data'));
+      //return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'successfully get data'));
+      return $this->sendResponse(InspirationResource::collection($data), 'data retrieved successfully.');
       die();
     } else {
       return response()->json(array('status' => 'false', 'data' => '', 'message' => 'not found data'));
+
       die();
     }
   }
@@ -138,8 +148,8 @@ class ApiController extends Controller
 
     if ($validator->fails()) {
 
-      return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
-
+      //return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
     if ($request->file('files')) {
@@ -151,7 +161,7 @@ class ApiController extends Controller
       $image = 'test.png';
     }
     $datas['title'] = $request->title;
-    $datas['files'] = image;
+    $datas['files'] = $image;
     $data_user = array('title' => $data['title'], 'image' => $image);
 
     $user = Inspiration::create($data_user);
@@ -159,7 +169,7 @@ class ApiController extends Controller
     if ($user) {
 
       return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
-
+      //return $this->sendResponse(new InspirationResource($data_user), 'Inspiration created successfully.');
       die();
     } else {
 
@@ -168,7 +178,17 @@ class ApiController extends Controller
       die();
     }
   }
+  //=================== edit ========================//
+  public function Inspiration_edit($id)
+  {
+    $data = Inspiration::find($id);
 
+    if (is_null($data)) {
+      return $this->sendError('data not found.');
+    }
+
+    return $this->sendResponse(new InspirationResource($data), 'data retrieved successfully.');
+  }
   //================ inspiration UPDATE data====================//
   public function inspiration_update_data(Request $request)
   {
@@ -192,8 +212,8 @@ class ApiController extends Controller
 
     if ($validator->fails()) {
 
-      return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
-
+      //return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
     if ($request->file('files')) {
@@ -210,7 +230,7 @@ class ApiController extends Controller
     if ($user) {
 
       return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
-
+      //return $this->sendResponse(new InspirationResource($data), 'Inspiration created successfully.');
       die();
     } else {
 
@@ -232,8 +252,8 @@ class ApiController extends Controller
 
     if ($data) {
 
-      return response()->json(array('status' => 'true', 'message' => 'Data Delete Successfully'));
-
+      //return response()->json(array('status' => 'true', 'message' => 'Data Delete Successfully'));
+      return $this->sendResponse([], 'Data deleted successfully.');
       die();
     } else {
 
@@ -243,15 +263,19 @@ class ApiController extends Controller
     }
   }
 
+
+
   //================ Category get data====================//
   public function category_get_data()
   {
     $data = Category::orderBy('id', 'desc')->get();
     if ($data) {
-      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'successfully get data'));
+      //return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'successfully get data'));
+      return $this->sendResponse(CategoryResource::collection($data), 'Posts fetched.');
       die();
     } else {
-      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'not found data'));
+      //return response()->json(array('status' => 'false', 'data' => '', 'message' => 'not found data'));
+      return $this->sendError('Error validation', $validator->errors());
       die();
     }
   }
@@ -265,13 +289,13 @@ class ApiController extends Controller
 
     if ($data) {
 
-      return response()->json(array('status' => 'true', 'message' => 'Data Delete Successfully'));
-
+      //return response()->json(array('status' => 'true', 'message' => 'Data Delete Successfully'));
+      return $this->sendResponse([], 'Data deleted successfully.');
       die();
     } else {
 
-      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
-
+      //return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+      return $this->sendError('Error validation', $validator->errors());
       die();
     }
   }
@@ -299,8 +323,8 @@ class ApiController extends Controller
 
     if ($validator->fails()) {
 
-      return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
-
+      //return response()->json(['status' => 'false', 'data' => $dataa, 'message' => $error_msg]);
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
 
@@ -312,17 +336,27 @@ class ApiController extends Controller
 
     if ($user) {
 
-      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
-
+      //return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+      return $this->sendResponse(new Category($data_user), 'category created successfully.');
       die();
     } else {
 
-      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
-
+      //return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+      return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
   }
+  //================ Category Edit data====================//
+  public function Category_show($id)
+  {
+    $Category = Category::find($id);
 
+    if (is_null($Category)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new CategoryResource($Category), 'Product retrieved successfully.');
+  }
   //================ Category UPDATE data====================//
   public function category_update_data(Request $request)
   {
@@ -335,7 +369,7 @@ class ApiController extends Controller
     ];
 
     $data['title'] = $request->title;
-    $data['description'] = $request->title;
+    $data['description'] = $request->description;
     $data['id'] = $request->id;
 
     $validator = Validator::make($data, $rules);

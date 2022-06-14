@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
 use Validator;
+
 class HomeController extends Controller
 {
   /**
@@ -191,7 +192,7 @@ class HomeController extends Controller
     $input     = $request->all();
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
-      return response()->json(['errors'=>$validator->errors()->all()]);
+      return response()->json(['errors' => $validator->errors()->all()]);
     }
     if ($request->file('files')) {
       $imagePath = $request->file('files');
@@ -205,7 +206,7 @@ class HomeController extends Controller
     $created_at = date("Y-m-d H:i:s");
     $data = Inspiration::insert(['title' => $request->title, 'image' => $imageName, 'created_at' => $created_at]);
 
-    return response()->json(['success'=>'Record is successfully added']);
+    return response()->json(['success' => 'Record is successfully added']);
   }
   //==================Edit Inspiration===================//  
   public function  edit_data($id)

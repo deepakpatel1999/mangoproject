@@ -25,8 +25,10 @@ Route::post('/signup', [App\Http\Controllers\ApiController::class, 'signup'])->n
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/inspirationp-get-data', [App\Http\Controllers\ApiController::class, 'inspiration_get_data'])->name('inspiration-get-data');
- 
+
     Route::post('/inspirationp-insert-data', [App\Http\Controllers\ApiController::class, 'inspiration_insert_data'])->name('inspiration-insert-data');
+
+    Route::get('/inspiration-edit/{ID}', [App\Http\Controllers\ApiController::class, 'Inspiration_edit'])->name('inspiration-edit');
 
     Route::post('/inspirationp-update-data', [App\Http\Controllers\ApiController::class, 'inspiration_update_data'])->name('inspiration-update-data');
 
@@ -37,6 +39,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/category-delete-data', [App\Http\Controllers\ApiController::class, 'category_delete_data'])->name('category-delete-data');
 
     Route::post('/category-insert-data', [App\Http\Controllers\ApiController::class, 'category_insert_data'])->name('category-insert-data');
+
+    Route::get('/Category-show/{id}', [App\Http\Controllers\ApiController::class, 'Category_show'])->name('Category-show');
 
     Route::post('/category-update-data', [App\Http\Controllers\ApiController::class, 'category_update_data'])->name('category-update-data');
 });
