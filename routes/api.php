@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/inspirationp-insert-data', [App\Http\Controllers\ApiController::class, 'inspiration_insert_data'])->name('inspiration-insert-data');
 
-    Route::get('/inspiration-edit/{ID}', [App\Http\Controllers\ApiController::class, 'Inspiration_edit'])->name('inspiration-edit');
+    Route::get('/inspiration-edit/{id}', [App\Http\Controllers\ApiController::class, 'Inspiration_edit'])->name('inspiration-edit');
 
     Route::post('/inspirationp-update-data', [App\Http\Controllers\ApiController::class, 'inspiration_update_data'])->name('inspiration-update-data');
 

@@ -76,3 +76,19 @@ Route::post('/delete-data', [App\Http\Controllers\HomeController::class, 'delete
 Route::get('auth/google', [App\Http\Controllers\HomeController::class, 'redirectToGoogle']);
 
 Route::get('auth/google/callback', [App\Http\Controllers\HomeController::class, 'handleGoogleCallback']);
+
+Route::group(['namespace' => 'Subscriptions'], function () {
+    Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');
+
+    Route::get('/payments', [App\Http\Controllers\Subscriptions\PaymentController::class, 'index'])->name('payments');
+
+    Route::post('/payments', [App\Http\Controllers\Subscriptions\PaymentController::class, 'store'])->name('payments.store');
+
+    Route::get('/subscriptions-list', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'subscriptions_list'])->name('subscriptions-list');
+
+    Route::get('/canceled', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'canceled'])->name('canceled');
+
+    Route::get('/upgrate/{id}', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'upgrate'])->name('upgrate');
+
+    Route::get('/upgrade-subcription/{id}', [App\Http\Controllers\Subscriptions\PaymentController::class, 'upgrade_subcription'])->name('upgrade-subcription');
+});
