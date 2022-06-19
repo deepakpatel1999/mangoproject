@@ -16,16 +16,16 @@ class PlanSeeder extends Seeder
   {
     $plan = [
       [
-        'title' => 'Primium Plan',
-        'identifier' => 'premium',
-        'stripe_id' => 'price_1LAW6tSBbKvqfMBZrVXm1FFn',
+        'title' => 'Premium Plan',
+        'identifier' => 'Premium',
+        'stripe_id' => 'price_1LBaSgSEEGJeqQkYOyynuSfN',
         'price' => '100',
 
       ],
       [
         'title' => 'Basic Plan',
         'identifier' => 'Basic',
-        'stripe_id' => 'price_1LAW4DSBbKvqfMBZXRnyCQ1a',
+        'stripe_id' => 'price_1LBaVhSEEGJeqQkY8WTj97MR',
         'price' => '10',
 
       ],

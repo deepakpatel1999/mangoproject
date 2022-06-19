@@ -88,9 +88,9 @@
         </div>
     </div>
 </div>
-<script>
+<!-- <script>
     setTimeout(function() {
         $('.alert').addClass('hide').removeClass('show').slideUp();
     }, 2000);
-</script>
+</script> -->
 @include('users.footer')

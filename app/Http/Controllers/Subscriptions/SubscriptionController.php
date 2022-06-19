@@ -38,7 +38,6 @@ class SubscriptionController extends Controller
   public function canceled()
   {
     $user = Auth::user();
-
     $subscriptions = Subscription::Where('user_id', $user->id)->WhereNull('ends_at')->first();
     if ($subscriptions) {
       $plan_name = $subscriptions->name;
