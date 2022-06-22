@@ -28,7 +28,13 @@
             </ul>
         </div>
     @endif
-
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{!! \Session::get('success') !!}</li>
+            </ul>
+        </div>
+    @endif
     @if ($subscriptions)
         <div class="container center">
             <div class="card-deck mb-4 text-center">
@@ -79,7 +85,7 @@
 
                         </ul>
                         <a class="btn btn-lg btn-block btn-primary"
-                            href="{{ route('payments', ['plan' => $plan->identifier]) }}">{{ $plan->title }}</a>
+                            href="{{ route('payments', ['plan' => $plan->identifier]) }}">Upgrade Plan</a>
 
                     </div>
                 </div>
@@ -88,9 +94,9 @@
         </div>
     </div>
 </div>
-<!-- <script>
+<script>
     setTimeout(function() {
         $('.alert').addClass('hide').removeClass('show').slideUp();
     }, 2000);
-</script> -->
+</script>
 @include('users.footer')

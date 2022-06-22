@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Subscriptions\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('webhooks/stripe', [WebhookController::class, 'handleWebhook']);
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -40,7 +43,6 @@ Route::get('/inspirations-data/{id}', [App\Http\Controllers\FrontendController::
 Route::get('/inspirations-all-data', [App\Http\Controllers\FrontendController::class, 'inspirations_all_data'])->name('inspirations-all-data');
 
 Route::get('/category-data/{id}', [App\Http\Controllers\FrontendController::class, 'category_data'])->name('category-data');
-
 
 
 Auth::routes();
@@ -92,3 +94,9 @@ Route::group(['namespace' => 'Subscriptions'], function () {
 
     Route::get('/upgrade-subcription/{id}', [App\Http\Controllers\Subscriptions\PaymentController::class, 'upgrade_subcription'])->name('upgrade-subcription');
 });
+Route::group(['prefix' => 'subcription'], function () {
+    Route::get('/user-subcription-list', [App\Http\Controllers\HomeController::class, 'user_Subcription_list'])->name('user-subcription-list');
+    
+   
+});
+Route::post('/filterdata', [App\Http\Controllers\HomeController::class, 'filterdata'])->name('filterdata');

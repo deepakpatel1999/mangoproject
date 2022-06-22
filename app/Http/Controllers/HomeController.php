@@ -10,6 +10,7 @@ use DB;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
+use App\Models\Subscription;
 use Validator;
 
 class HomeController extends Controller
@@ -247,5 +248,39 @@ class HomeController extends Controller
     return json_encode(array(
       "statusCode" => 200
     ));
+  }
+
+  //============== User Subcriptipon List========================//
+  public function user_Subcription_list()
+  {
+    $Subcription_list = Subscription::with('user')->paginate(5);
+    // echo '<pre>';
+    // print_r($Subcription_list);
+    // echo'</pre>';
+
+    return view('admin.user_Subcription_list', compact('Subcription_list'));
+  }
+  //===================filter data =========================//
+  public function filterdata(Request $request)
+  {
+    if ($request->status == 'active') {
+
+      $Subcription_list = Subscription::with('user')->where('stripe_status', 'active')->get();
+    } else if ($request->status == 'cancelled') {
+
+      $Subcription_list = Subscription::with('user')->where('stripe_status', 'canceled')->get();
+    } else if ($request->status == 'all') {
+
+      $Subcription_list = Subscription::with('user')->get();
+    } else if ($request->status == 'onload') {
+
+      $Subcription_list = Subscription::with('user')->get();
+    } else {
+
+      //$Subcription_list = Subscription::with('user')->where('user.email', 'LIKE', '%'.$request->status. '%')->get();
+      $Subcription_list = Subscription::with('user')->whereRelation('user', 'email', 'like', '%' . $request->status . '%')->orWhereRelation('user', 'email', 'like', '%' . $request->status . '%')->get();
+    }
+
+    return json_encode(array('data' => $Subcription_list));
   }
 }

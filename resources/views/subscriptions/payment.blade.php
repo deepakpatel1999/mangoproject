@@ -23,8 +23,8 @@
                         <input type="hidden" name="plan" id="plan" value="{{ request('plan') }}">
                         <div class="form-group">
                             <label for="">Name</label>
-                            <input type="text" name="name" id="card-holder-name" class="form-control" value=""
-                                placeholder="Name on the card">
+                            <input type="text" name="name" id="card-holder-name" class="form-control"
+                                value="" placeholder="Name on the card">
                         </div>
                         <div class="form-group">
                             <label for="">Card details</label>

@@ -50,8 +50,9 @@
                                             @csrf
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Title*</label>
-                                                <input type="text" id="title" name="title" value="{{ old('title') }}"
-                                                    placeholder="Enter title" class="form-control title">
+                                                <input type="text" id="title" name="title"
+                                                    value="{{ old('title') }}" placeholder="Enter title"
+                                                    class="form-control title">
                                             </div>
                                             <span class="title_error" style="color: red;"></span>
                                             <div class="form-group">
@@ -63,7 +64,8 @@
 
 
                                             <br>
-                                            <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                value="submit">Submit</button>
                                         </form>
                                     </div>
 

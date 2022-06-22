@@ -7,6 +7,7 @@ use App\Models\Subscription;
 use DB;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class SubscriptionController extends Controller
 {
@@ -30,7 +31,7 @@ class SubscriptionController extends Controller
   {
     $id = Auth::user()->id;
 
-    $subscription = DB::table('subscriptions')->where('user_id', $id)->orderBy('id', 'DESC')->get();
+    $subscription = Subscription::where([['user_id', '=', $id], ['stripe_status', '!=', 'active']])->orderBy('id', 'DESC')->take(1)->get();
 
     return view('subscriptions.subscriptions_list', compact('subscription'));
   }
