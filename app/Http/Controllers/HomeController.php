@@ -278,9 +278,18 @@ class HomeController extends Controller
     } else {
 
       //$Subcription_list = Subscription::with('user')->where('user.email', 'LIKE', '%'.$request->status. '%')->get();
-      $Subcription_list = Subscription::with('user')->whereRelation('user', 'email', 'like', '%' . $request->status . '%')->orWhereRelation('user', 'email', 'like', '%' . $request->status . '%')->get();
+      $Subcription_list = Subscription::with('user')->whereRelation('user', 'first_name', 'like', '%' . $request->status . '%')->orWhereRelation('user', 'last_name', 'like', '%' . $request->status . '%')->get();
     }
 
     return json_encode(array('data' => $Subcription_list));
+  }
+
+  //================== most love by Parents===================//  
+  public function most_love_by()
+  {
+
+    $data['category'] = Category::orderBy('id', 'desc')->get();
+
+    return view('admin.most_love_by', $data);
   }
 }

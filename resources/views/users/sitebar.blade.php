@@ -11,7 +11,7 @@
              <li><a><i class="fa fa-home"></i> Subscriptions <span class="fa fa-chevron-down"></span></a>
                  <ul class="nav child_menu">
                      <li><a href="{{ route('plans') }}">Subscriptions</a></li>
-                     <li><a href="{{ route('subscriptions-list') }}">Subscriptions List</a></li>
+                     <li><a href="{{ route('subscriptions-list') }}"> Subscriptions Canceled List</a></li>
                  </ul>
              </li>
 

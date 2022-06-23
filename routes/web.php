@@ -79,6 +79,8 @@ Route::get('auth/google', [App\Http\Controllers\HomeController::class, 'redirect
 
 Route::get('auth/google/callback', [App\Http\Controllers\HomeController::class, 'handleGoogleCallback']);
 
+Route::get('/most-love-by', [App\Http\Controllers\HomeController::class, 'most_love_by'])->name('most-love-by');
+
 Route::group(['namespace' => 'Subscriptions'], function () {
     Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');
 
@@ -96,7 +98,6 @@ Route::group(['namespace' => 'Subscriptions'], function () {
 });
 Route::group(['prefix' => 'subcription'], function () {
     Route::get('/user-subcription-list', [App\Http\Controllers\HomeController::class, 'user_Subcription_list'])->name('user-subcription-list');
-    
-   
+
+    Route::post('/filterdata', [App\Http\Controllers\HomeController::class, 'filterdata'])->name('filterdata');
 });
-Route::post('/filterdata', [App\Http\Controllers\HomeController::class, 'filterdata'])->name('filterdata');

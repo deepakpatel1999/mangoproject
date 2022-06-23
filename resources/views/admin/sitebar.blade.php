@@ -32,6 +32,14 @@
                  </ul>
 
              </li>
+             <li><a><i class="fa fa-edit"></i> Most Loved <span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu">
+
+                  <li><a href="{{ route('most-love-by') }}">Most Loved By Parents</a></li>
+
+              </ul>
+
+          </li>
      </div>
 
  </div>

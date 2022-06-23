@@ -86,47 +86,47 @@
     $('#imageUpload').on('submit', (function(e) {
         e.preventDefault(e);
 
-        // var title = $('.title').val();
-        // var file = $('#file').val();
+        var title = $('.title').val();
+        var file = $('#file').val();
 
-        // var title_err = '';
-        // var file_err = '';
+        var title_err = '';
+        var file_err = '';
 
-        // if (title == '') {
-        //     title_err = 'Title is required*';
-        // }
-        // if (file == '') {
-        //     file_err = 'Image is required*';
-        // }
+        if (title == '') {
+            title_err = 'Title is required*';
+        }
+        if (file == '') {
+            file_err = 'Image is required*';
+        }
 
-        // $('.title_error').html(title_err);
-        // $('.file_error').html(file_err);
+        $('.title_error').html(title_err);
+        $('.file_error').html(file_err);
 
-        // if (title_err || file_err) {
-        //     return false;
-        // } else {
-        true;
-        var formData = new FormData(this);
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('create-data') }}",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                jQuery.each(data.errors, function(key, value) {
-                    jQuery('.alert-danger').show();
-                    jQuery('.alert-danger').append('<p>' + value + '</p>');
-                });
+        if (title_err || file_err) {
+            return false;
+        } else {
+            true;
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('create-data') }}",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    // jQuery.each(data.errors, function(key, value) {
+                    //     jQuery('.alert-danger').show();
+                    //     jQuery('.alert-danger').append('<p>' + value + '</p>');
+                    // });
 
-                // console.log(dataResult);
-                // var dataResult = JSON.parse(dataResult);
-                // alert('Submit Succssfully');
-                // window.location = "{{ url('inspiration') }}";
-            },
-        });
-        // }
+                    // console.log(dataResult);
+                    // var dataResult = JSON.parse(dataResult);
+                    alert('Submit Succssfully');
+                    window.location = "{{ url('inspiration') }}";
+                },
+            });
+        }
     }));
 </script>
 @include('admin.footer')

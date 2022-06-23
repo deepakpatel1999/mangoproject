@@ -87,33 +87,33 @@
                 </div>
             </div>
         </div>
-       <div class="container">
-        <form action="#">
-          <label for="gsearch"></label>
-          <input type="search" class="search" name="search" placeholder="Search....">
-          <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-          <button type="button" id ="search" class="btn btn-light">Search</button>
-        </form>
-        <form action="#">
+        <div class="container">
+            <form action="#">
+                <label for="gsearch"></label>
+                <input type="search" class="search" name="search" placeholder="Search....">
+                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                <button type="button" id="search" class="btn btn-light">Search</button>
+            </form>
+            <form action="#">
 
-            <label for="">Choose Status:</label>
-            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                <label for="">Choose Status:</label>
+                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
-            <select name="status" id="status">
-                <option value="#">Select</option>
-                <br>
-                <option value="active">Active</option>
-                <br>
-                <option value="cancelled">Cancelled</option>
-                <br>
-                <option value="all">All</option>
+                <select name="status" id="status">
+                    <option value="#">Select</option>
+                    <br>
+                    <option value="active">Active</option>
+                    <br>
+                    <option value="cancelled">Cancelled</option>
+                    <br>
+                    <option value="all">All</option>
 
-            </select>
+                </select>
 
 
-        </form> 
-        
-       </div>
+            </form>
+
+        </div>
         <div class="clearfix"></div>
 
         <div class="row" style="display: block;">
@@ -155,18 +155,19 @@
                                     <tr class="headings">
 
                                         <th class="column-title">S.NO. </th>
-                                        <th class="column-title"> name</th>
+                                        <th class="column-title"> First Name</th>
+                                        <th class="column-title"> Last Name</th>
                                         <th class="column-title">Email</th>
                                         <th class="column-title">Plane Name </th>
                                         <th class="column-title">Status</th>
+                                        <th class="column-title">End Date</th>
+                                        <th class="column-title">Create Date</th>
 
 
                                     </tr>
                                 </thead>
                                 <tbody class="bodyData">
-                                    {{-- <?php// $i = 0;
-                                                                                                                                                                                    
-                                                                                                                                                                                    ?> ?> ?> ?> ?> --}}
+                                    {{-- <?php// $i = 0; ?>  --}}
                                     {{-- @foreach ($Subcription_list as $Subcription_lists)
                                         <?php ///$i++;
                                         ?>
@@ -229,10 +230,13 @@
                     var i = 1;
                     $.each(resultData, function(index, row) {
                         bodyData += "<tr>"
-                        bodyData += "<td>" + i++ + "</td><td>" + row.user.name +
+                        bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
+                            "</td><td>" + row.user.last_name +
                             "</td><td>" +
                             row.user.email + "</td><td>" + row.name + "</td><td>" + row
-                            .stripe_status + "</td>"
+                            .stripe_status + "</td><td>" + row
+                            .ends_at + "</td><td>" + row
+                            .created_at + "</td>"
                         bodyData += "</tr>";
 
                     })
@@ -266,12 +270,15 @@
                 var bodyData = '';
                 var i = 1;
                 $.each(resultData, function(index, row) {
-                    bodyData += "<tr>"
-                    bodyData += "<td>" + i++ + "</td><td>" + row.user.name + "</td><td>" +
-                        row.user
-                        .email + "</td><td>" + row.name + "</td><td>" + row.stripe_status +
-                        "</td>"
-                    bodyData += "</tr>";
+                  bodyData += "<tr>"
+                        bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
+                            "</td><td>" + row.user.last_name +
+                            "</td><td>" +
+                            row.user.email + "</td><td>" + row.name + "</td><td>" + row
+                            .stripe_status + "</td><td>" + row
+                            .ends_at + "</td><td>" + row
+                            .created_at + "</td>"
+                        bodyData += "</tr>";
 
                 })
                 $(".bodyData").empty();
@@ -280,7 +287,7 @@
             },
         });
     });
-   
+
     $('#search').on('click', function() {
         var status = $('.search').val();
         var token = $('#token').val();
@@ -305,11 +312,14 @@
                     var bodyData = '';
                     var i = 1;
                     $.each(resultData, function(index, row) {
-                        bodyData += "<tr>"
-                        bodyData += "<td>" + i++ + "</td><td>" + row.user.name +
+                      bodyData += "<tr>"
+                        bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
+                            "</td><td>" + row.user.last_name +
                             "</td><td>" +
                             row.user.email + "</td><td>" + row.name + "</td><td>" + row
-                            .stripe_status + "</td>"
+                            .stripe_status + "</td><td>" + row
+                            .ends_at + "</td><td>" + row
+                            .created_at + "</td>"
                         bodyData += "</tr>";
 
                     })

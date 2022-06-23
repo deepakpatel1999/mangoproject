@@ -43,4 +43,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/Category-show/{id}', [App\Http\Controllers\ApiController::class, 'Category_show'])->name('Category-show');
 
     Route::post('/category-update-data', [App\Http\Controllers\ApiController::class, 'category_update_data'])->name('category-update-data');
+
+    //Route::get('/most-love-by', [App\Http\Controllers\ApiController::class, 'most_love_by'])->name('most-love-by');
 });
