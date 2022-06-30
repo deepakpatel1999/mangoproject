@@ -17,7 +17,7 @@ class Inspiration extends JsonResource
     return [
       //'id' => $this->id,
       'title' => $this->title,
-      'files' => $this->image,
+      'files' => asset('/images/' .$this->image),
       // 'created_at' => $this->created_at->format('m/d/Y'),
       // 'updated_at' => $this->updated_at->format('m/d/Y'),
     ];

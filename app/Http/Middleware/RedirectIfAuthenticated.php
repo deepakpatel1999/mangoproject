@@ -25,6 +25,9 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
             }
+            // else{
+            //     return response()->json(['error' => 'Not authorized.'],403);  
+            // }
         }
 
         return $next($request);

@@ -11,6 +11,13 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
 use App\Models\Subscription;
+use App\Models\MostLoveBy;
+use App\Models\EditerPic;
+use App\Models\MoreToExplore;
+use App\Models\BrowseByCategory;
+use App\Models\Setting;
+use App\Models\Banner;
+
 use Validator;
 
 class HomeController extends Controller
@@ -31,7 +38,7 @@ class HomeController extends Controller
    * @return \Illuminate\Contracts\Support\Renderable
    */
 
-  //================USER DASHBOARD====================//   
+  //================USER DASHBOARD====================//
   public function index()
   {
     return view('users.user_dashboard');
@@ -46,7 +53,7 @@ class HomeController extends Controller
   }
 
 
-  //==================UPDATE PROFILE===================//  
+  //==================UPDATE PROFILE===================//
   public function edit_profile(Request $request)
   {
     $this->validate($request, [
@@ -68,7 +75,7 @@ class HomeController extends Controller
     }
   }
 
-  //==================Google Login===================//  
+  //==================Google Login===================//
   public function redirectToGoogle()
   {
     return Socialite::driver('google')->redirect();
@@ -108,7 +115,7 @@ class HomeController extends Controller
   }
 
 
-  //==================Display Category===================//  
+  //==================Display Category===================//
   public function category()
   {
 
@@ -118,14 +125,19 @@ class HomeController extends Controller
   }
 
 
-  //==================Add Category===================//  
+  //==================Add Category===================//
   public function add_catagory(Request $request)
   {
-    $request->validate([
-      'title' => 'required',
-      'description' => 'required',
-    ]);
-
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
     $category = Category::create($request->all());
     if ($category) {
       return redirect()->back()->with('success', 'insert successfully');
@@ -135,7 +147,7 @@ class HomeController extends Controller
     }
   }
 
-  //==================Delete Category===================//  
+  //==================Delete Category===================//
   public function categories_delete(Request $request)
   {
 
@@ -149,15 +161,20 @@ class HomeController extends Controller
     }
   }
 
-  //==================UPDATE Category===================//  
+  //==================UPDATE Category===================//
   public function category_update(Request $request)
   {
     $id = $request->id;
-    $request->validate([
-      'title' => 'required',
-      'description' => 'required',
-    ]);
-
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
     $category = Category::find($id);
     $category->title = $request->title;
     $category->description = $request->description;
@@ -165,7 +182,7 @@ class HomeController extends Controller
     return redirect()->back()->with('update-success', 'update successfully');
   }
 
-  //==================Display Inspiration===================//  
+  //==================Display Inspiration===================//
   public function inspiration()
   {
 
@@ -174,14 +191,14 @@ class HomeController extends Controller
     return view('admin.Inspiration', $data);
   }
 
-  //==================Create Inspiration===================//  
+  //==================Create Inspiration===================//
   public function create()
   {
 
     return view('admin.create');
   }
 
-  //==================Insert Inspiration===================//  
+  //==================Insert Inspiration===================//
   public function  create_data(Request $request)
   {
     $rules = [
@@ -209,14 +226,14 @@ class HomeController extends Controller
 
     return response()->json(['success' => 'Record is successfully added']);
   }
-  //==================Edit Inspiration===================//  
+  //==================Edit Inspiration===================//
   public function  edit_data($id)
   {
     $data = Inspiration::find($id);
     return view('admin.edit', compact('data'));
   }
 
-  //==================Update Inspiration===================//  
+  //==================Update Inspiration===================//
   public function  update_data(Request $request)
   {
     $id = $request->id;
@@ -242,8 +259,10 @@ class HomeController extends Controller
     $id = $request->id;
     $data = Inspiration::find($id);
     $image = $data->image;
-    $path = public_path() . "/images/" . $image;
-    unlink($path);
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
     $data = Inspiration::find($id)->delete();
     return json_encode(array(
       "statusCode" => 200
@@ -284,12 +303,511 @@ class HomeController extends Controller
     return json_encode(array('data' => $Subcription_list));
   }
 
-  //================== most love by Parents===================//  
+  //================== most love by Parents===================//
   public function most_love_by()
   {
 
-    $data['category'] = Category::orderBy('id', 'desc')->get();
-
-    return view('admin.most_love_by', $data);
+    return view('admin.most_love_by');
   }
+
+  //==================Insert Most Love by===================//
+  public function  add_most_love(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'files' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'files.required' => 'Image is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+    } else {
+      $imageName = 'test.png';
+    }
+    $created_at = date("Y-m-d H:i:s");
+    $data = MostLoveBy::insert(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'created_at' => $created_at]);
+    if ($data) {
+      return back()->with('success', 'Data Insert Successfully.');
+    } else {
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //==================Update Most Love BY===================//
+  public function  most_love_update(Request $request)
+  {
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = MostLoveBy::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = MostLoveBy::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+      dd('ok');
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //===============Delete Data Most Love=====================//
+  public function most_love_delete(Request $request)
+  {
+    $id = $request->id;
+    $data = MostLoveBy::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = MostLoveBy::find($id)->delete();
+    if ($data) {
+      return back()->with('delete-success', 'Delete Successfuly.');
+    } else {
+      return back()->with('delete-failed', 'Something wrong.');
+    }
+  }
+  //================== Editors picks data display===================//
+  public function editor_picks()
+  {
+
+    return view('admin.editor_picks');
+  }
+  //================== Create picks data display===================//
+  public function create_editor_picks()
+  {
+
+    return view('admin.create_editor_picks');
+  }
+  //==================Insert Editor Picks===================//
+  public function  create_editor(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'files' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'files.required' => 'Image is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+    } else {
+      $imageName = 'test.png';
+    }
+    $created_at = date("Y-m-d H:i:s");
+    $data = EditerPic::insert(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'created_at' => $created_at]);
+    if ($data) {
+      return redirect()->route('editor-picks')->with('success', 'Data Insert Successfully.');
+    } else {
+      return redirect()->route('editor-picks')->with('failed', 'Something wrong.');
+    }
+  }
+
+  //==================Update  editor_picks===================//
+  public function  editor_picks_update(Request $request)
+  {
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = EditerPic::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = EditerPic::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //=============== editor_picks_elete =====================//
+  public function editor_picks_elete(Request $request)
+  {
+    $id = $request->id;
+    $data = EditerPic::find($id);
+
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = EditerPic::find($id)->delete();
+    if ($data) {
+      return back()->with('delete-success', 'Delete Successfuly.');
+    } else {
+      return back()->with('delete-failed', 'Something wrong.');
+    }
+  }
+  //==================  more_to_explore data display===================//
+  public function more_to_explore()
+  {
+
+    return view('admin.more_to_explore');
+  }
+  //================== Create create_more_to_explore===================//
+  public function create_more_to_explore()
+  {
+
+    return view('admin.create_more_to_explore');
+  }
+
+
+  //==================Insert  create_more_to===================//
+  public function  create_more_to(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'files' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'files.required' => 'Image is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+    } else {
+      $imageName = 'test.png';
+    }
+    $created_at = date("Y-m-d H:i:s");
+    $data = MoreToExplore::insert(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'created_at' => $created_at]);
+    if ($data) {
+      return redirect()->route('more-to-explore')->with('success', 'Data Insert Successfully.');
+    } else {
+      return redirect()->route('more-to-explore')->with('failed', 'Something wrong.');
+    }
+  }
+  //==================Update  more_to_update==================//
+  public function  more_to_update(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = MoreToExplore::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = MoreToExplore::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //=============== more_to_delete =====================//
+  public function more_to_delete(Request $request)
+  {
+    $id = $request->id;
+    $data = MoreToExplore::find($id);
+
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = MoreToExplore::find($id)->delete();
+    if ($data) {
+      return back()->with('delete-success', 'Delete Successfuly.');
+    } else {
+      return back()->with('delete-failed', 'Something wrong.');
+    }
+  }
+
+  //==================  browse_by_category data display===================//
+  public function browse_by_category()
+  {
+
+    return view('admin.browse_by_category');
+  }
+
+  //================== Create create_more_to_explore===================//
+  public function create_browse_by_category()
+  {
+
+    return view('admin.create_browse_by_category');
+  }
+
+  //==================Insert browse_by===================//
+  public function  insert_browse_by(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'files' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'files.required' => 'Image is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+    } else {
+      $imageName = 'test.png';
+    }
+    $created_at = date("Y-m-d H:i:s");
+    $data = BrowseByCategory::insert(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'created_at' => $created_at]);
+    if ($data) {
+      return redirect()->route('browse-by-category')->with('success', 'Data Insert Successfully.');
+    } else {
+      return redirect()->route('browse-by-category')->with('failed', 'Something wrong.');
+    }
+  }
+
+  //==================Update  browse_to_category==================//
+  public function  browse_to_category_update(Request $request)
+  {
+
+    $request->validate(
+      [
+        'title' => 'required',
+        'description' => 'required'
+      ],
+      [
+        'title.required' => 'Title is required',
+        'description.required' => 'Discription is required'
+      ]
+    );
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('files')) {
+      $imagePath = $request->file('files');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = BrowseByCategory::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'image' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = BrowseByCategory::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //=============== browse_by_delete =====================//
+  public function browse_by_delete(Request $request)
+  {
+    $id = $request->id;
+    $data = BrowseByCategory::find($id);
+
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = BrowseByCategory::find($id)->delete();
+    if ($data) {
+      return back()->with('delete-success', 'Delete Successfuly.');
+    } else {
+      return back()->with('delete-failed', 'Something wrong.');
+    }
+  }
+  //==================  browse_by_category data display===================//
+  public function setting_display()
+  {
+
+    return view('admin.setting_display');
+  }
+  //==================Update  setting_data==================//
+  public function  setting_data_update(Request $request)
+  {
+
+    $request->validate(
+      [
+        'address' => 'required',
+        'contact' => 'required',
+        'email' => 'required',
+        'about_us' => 'required'
+      ],
+      [
+        'address.required' => 'Address is required',
+        'contact.required' => 'Contact is required',
+        'email.required' => 'Email is required',
+        'about_us.required' => 'About is required'
+      ]
+    );
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('logo')) {
+      $imagePath = $request->file('logo');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us, 'image' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us,  'updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+  //==================  banner data display===================//
+  public function banner_display()
+  {
+
+    return view('admin.banner_display');
+  }
+  //================== Create create_more_to_explore===================//
+  public function banner_create_data()
+  {
+
+    return view('admin.banner_create_data');
+  }
+  //==================Insert baner_data===================//
+  public function  insert_baner_data(Request $request)
+  {
+
+    $request->validate(
+      [
+
+        'banner' => 'required'
+
+      ],
+      [
+
+        'banner.required' => 'Banner is required'
+
+      ]
+    );
+    if ($request->file('banner')) {
+      $imagePath = $request->file('banner');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+    } else {
+      $imageName = 'test.png';
+    }
+    $created_at = date("Y-m-d H:i:s");
+    $data = Banner::insert(['banner' => $imageName, 'created_at' => $created_at]);
+    if ($data) {
+      return redirect()->route('banner-display')->with('success', 'Data Insert Successfully.');
+    } else {
+      return redirect()->route('banner-display')->with('failed', 'Something wrong.');
+    }
+  }
+  //==================Update  banner_data==================//
+  public function  banner_data_update(Request $request)
+  {
+
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    if ($request->file('banner')) {
+      $imagePath = $request->file('banner');
+      $imageName = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $imageName);
+      $data = Banner::where('id', $id)->update(['banner' => $imageName, 'updated_at' => $updated_at]);
+    } else {
+      $data = Banner::where('id', $id)->update(['updated_at' => $updated_at]);
+    }
+    if ($data) {
+      return back()->with('update-success', 'Data Update Successfully.');
+    } else {
+
+      return back()->with('failed', 'Something wrong.');
+    }
+  }
+   //=============== more_to_delete =====================//
+   public function banner_data_delete(Request $request)
+   {
+     $id = $request->id;
+     $data = Banner::find($id);
+ 
+     $image = $data->banner;
+     if ($image != '') {
+       $path = public_path() . "/images/" . $image;
+       unlink($path);
+     }
+     $data = Banner::find($id)->delete();
+     if ($data) {
+       return back()->with('delete-success', 'Delete Successfuly.');
+     } else {
+       return back()->with('delete-failed', 'Something wrong.');
+     }
+   }
+ 
 }

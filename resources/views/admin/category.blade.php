@@ -94,25 +94,33 @@
 
                                     <label for="exampleInputName2">Title</label><br>
                                     <input type="text" class="form-control title" id="title" name="title"
-                                        value="{{ old('title') }}" placeholder="Enter Title" required>
+                                        value="{{ old('title') }}" placeholder="Enter Title">
 
                                 </div>
-                                @error('title')
+                                {{-- @error('title')
                                     <div class="alert alert-danger ">{{ $error }}</div>
-                                @enderror
+                                @enderror --}}
+
+                                @if ($errors->has('title'))
+                                    <span class="text-danger">{{ $errors->first('title') }}</span>
+                                @endif
+
                                 <br>
                                 <br>
                                 <div class="form-group">
                                     <label for="exampleInputName2">Discription</label><br>
                                     <input type="text" class="form-control description" id="description"
                                         name="description" value="{{ old('description') }}"
-                                        placeholder="Enter Discription" required>
+                                        placeholder="Enter Discription">
 
 
                                 </div>
-                                @error('description')
+                                {{-- @error('description')
                                     <div class="alert alert-danger ">{{ $error }}</div>
-                                @enderror
+                                @enderror --}}
+                                @if ($errors->has('description'))
+                                    <span class="text-danger">{{ $errors->first('description') }}</span>
+                                @endif
                                 <br>
                                 <br>
                                 <div>
@@ -154,13 +162,26 @@
                                     enctype="multipart/form-data">
                                     @csrf
 
-                                    <input type="hidden" id="" name="id" value="{{ @$categories->id }}">
+                                    <input type="hidden" id="" name="id"
+                                        value="{{ @$categories->id }}">
                                     <label for="name"> Title:</label><br>
-                                    <input type="text" id="" name="title" value="{{ @$categories->title }}"
-                                        placeholder="Title.."><br><br>
+                                    <input type="text" id="" name="title"
+                                        value="{{ @$categories->title }}" placeholder="Title..">
+
+                                    @if ($errors->has('title'))
+                                        <span class="text-danger">{{ $errors->first('title') }}</span>
+                                    @endif
+
+                                    <br><br>
                                     <label for="email"> Discription:</label><br>
                                     <input type="text" id="" name="description"
-                                        value="{{ @$categories->description }}" placeholder="Discription.."><br><br>
+                                        value="{{ @$categories->description }}" placeholder="Discription..">
+                                    @if ($errors->has('description'))
+                                        <span class="text-danger">{{ $errors->first('description') }}</span>
+                                    @endif
+                                    <br><br>
+
+
 
                                     <br>
                                     <input type="submit" value="Submit">
@@ -193,7 +214,8 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     <label for="name"> DO YOU WANT TO DELETE CATEGORY:</label><br>
-                                    <input type="hidden" id="" name="id" value="{{ $categories->id }}"><br>
+                                    <input type="hidden" id="" name="id"
+                                        value="{{ $categories->id }}"><br>
                                     <input type="submit" value="confirm">
                                 </form>
                             </div>

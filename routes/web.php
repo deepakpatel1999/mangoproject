@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Subscriptions\WebhookController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TrySomethingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,64 +25,124 @@ Route::post('webhooks/stripe', [WebhookController::class, 'handleWebhook']);
 Route::get('/', function () {
     return view('index');
 });
-Route::get('/edit_profile', [App\Http\Controllers\FrontendController::class, 'edit_profile'])->name('edit_profile');
+Route::get('/edit_profile', [FrontendController::class, 'edit_profile'])->name('edit_profile');
 
-Route::get('/event_details', [App\Http\Controllers\FrontendController::class, 'event_details'])->name('event_details');
+Route::get('/event_details', [FrontendController::class, 'event_details'])->name('event_details');
 
-Route::get('/event_listing', [App\Http\Controllers\FrontendController::class, 'event_listing'])->name('event_listing');
+Route::get('/event_listing', [FrontendController::class, 'event_listing'])->name('event_listing');
 
-Route::get('/how_to_score_points', [App\Http\Controllers\FrontendController::class, 'how_to_score_points'])->name('how_to_score_points');
+Route::get('/how_to_score_points', [FrontendController::class, 'how_to_score_points'])->name('how_to_score_points');
 
-Route::get('/kids', [App\Http\Controllers\FrontendController::class, 'kids'])->name('kids');
+Route::get('/kids', [FrontendController::class, 'kids'])->name('kids');
 
-Route::get('/my_favourite', [App\Http\Controllers\FrontendController::class, 'my_favourite'])->name('my_favourite');
+Route::get('/my_favourite', [FrontendController::class, 'my_favourite'])->name('my_favourite');
 
-Route::get('/search_results', [App\Http\Controllers\FrontendController::class, 'search_results'])->name('search_results');
+Route::get('/search_results', [FrontendController::class, 'search_results'])->name('search_results');
 
-Route::get('/user_profile', [App\Http\Controllers\FrontendController::class, 'user_profile'])->name('user_profile');
+Route::get('/user_profile', [FrontendController::class, 'user_profile'])->name('user_profile');
 
-Route::get('/inspirations-data/{id}', [App\Http\Controllers\FrontendController::class, 'inspirations_data'])->name('inspirations-data');
+Route::get('/inspirations-data/{id}', [FrontendController::class, 'inspirations_data'])->name('inspirations-data');
 
-Route::get('/inspirations-all-data', [App\Http\Controllers\FrontendController::class, 'inspirations_all_data'])->name('inspirations-all-data');
+Route::get('/inspirations-all-data', [FrontendController::class, 'inspirations_all_data'])->name('inspirations-all-data');
 
-Route::get('/category-data/{id}', [App\Http\Controllers\FrontendController::class, 'category_data'])->name('category-data');
+Route::get('/category-data/{id}', [FrontendController::class, 'category_data'])->name('category-data');
 
 
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::get('Admin/Home', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.home');
+    Route::get('Admin/Home', [HomeController::class, 'adminHome'])->name('admin.home');
 
-    Route::post('/admin/Edit-profile', [App\Http\Controllers\HomeController::class, 'edit_profile'])->name('admin.edit_profile');
+    Route::post('/admin/Edit-profile', [HomeController::class, 'edit_profile'])->name('admin.edit_profile');
 });
 
-Route::get('/category', [App\Http\Controllers\HomeController::class, 'category'])->name('category');
+Route::get('/category', [HomeController::class, 'category'])->name('category');
 
-Route::post('/add-catagory', [App\Http\Controllers\HomeController::class, 'add_catagory'])->name('add-catagory');
+Route::post('/add-catagory', [HomeController::class, 'add_catagory'])->name('add-catagory');
 
-Route::post('/categories-delete', [App\Http\Controllers\HomeController::class, 'categories_delete'])->name('categories-delete');
+Route::post('/categories-delete', [HomeController::class, 'categories_delete'])->name('categories-delete');
 
-Route::post('/category-update', [App\Http\Controllers\HomeController::class, 'category_update'])->name('category-update');
+Route::post('/category-update', [HomeController::class, 'category_update'])->name('category-update');
 
-Route::get('/inspiration', [App\Http\Controllers\HomeController::class, 'inspiration'])->name('inspiration');
+Route::get('/inspiration', [HomeController::class, 'inspiration'])->name('inspiration');
 
-Route::get('/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
+Route::get('/create', [HomeController::class, 'create'])->name('create');
 
-Route::post('/create-data', [App\Http\Controllers\HomeController::class, 'create_data'])->name('create-data');
+Route::post('/create-data', [HomeController::class, 'create_data'])->name('create-data');
 
-Route::get('/edit-data/{id}', [App\Http\Controllers\HomeController::class, 'edit_data'])->name('edit-data');
+Route::get('/edit-data/{id}', [HomeController::class, 'edit_data'])->name('edit-data');
 
-Route::post('/update-data', [App\Http\Controllers\HomeController::class, 'update_data'])->name('update-data');
+Route::post('/update-data', [HomeController::class, 'update_data'])->name('update-data');
 
-Route::post('/delete-data', [App\Http\Controllers\HomeController::class, 'delete_data'])->name('delete-data');
+Route::post('/delete-data', [HomeController::class, 'delete_data'])->name('delete-data');
 
-Route::get('auth/google', [App\Http\Controllers\HomeController::class, 'redirectToGoogle']);
+Route::get('auth/google', [HomeController::class, 'redirectToGoogle']);
 
-Route::get('auth/google/callback', [App\Http\Controllers\HomeController::class, 'handleGoogleCallback']);
+Route::get('auth/google/callback', [HomeController::class, 'handleGoogleCallback']);
 
-Route::get('/most-love-by', [App\Http\Controllers\HomeController::class, 'most_love_by'])->name('most-love-by');
+Route::get('/most-love-by', [HomeController::class, 'most_love_by'])->name('most-love-by');
+
+Route::post('/add-most-love', [HomeController::class, 'add_most_love'])->name('add-most-love');
+
+Route::post('/most-love-update', [HomeController::class, 'most_love_update'])->name('most-love-update');
+
+Route::post('/most-love-delete', [HomeController::class, 'most_love_delete'])->name('most-love-delete');
+
+Route::get('/editor-picks', [HomeController::class, 'editor_picks'])->name('editor-picks');
+
+Route::get('/create-editor-picks', [HomeController::class, 'create_editor_picks'])->name('create-editor-picks');
+
+Route::post('/create-editor', [HomeController::class, 'create_editor'])->name('create-editor');
+
+Route::post('/editor-picks-update', [HomeController::class, 'editor_picks_update'])->name('editor-picks-update');
+
+Route::post('/editor-picks-delete', [HomeController::class, 'editor_picks_elete'])->name('editor-picks-delete');
+
+Route::get('/try-something', [TrySomethingController::class, 'try_something'])->name('try-something');
+
+Route::get('/create-try-somthing', [TrySomethingController::class, 'create_try_somthing'])->name('create-try-somthing');
+
+Route::post('/create-try', [TrySomethingController::class, 'create_try'])->name('create-try');
+
+Route::post('/try-something-update', [TrySomethingController::class, 'try_something_update'])->name('try-something-update');
+
+Route::post('/try-something-delete', [TrySomethingController::class, 'try_something_delete'])->name('try-something-delete');
+
+Route::get('/more-to-explore', [HomeController::class, 'more_to_explore'])->name('more-to-explore');
+
+Route::get('/create-more-to-explore', [HomeController::class, 'create_more_to_explore'])->name('create-more-to-explore');
+
+Route::post('/create-more-to', [HomeController::class, 'create_more_to'])->name('create-more-to');
+
+Route::post('/more-to-update', [HomeController::class, 'more_to_update'])->name('more-to-update');
+
+Route::post('/more-to-delete', [HomeController::class, 'more_to_delete'])->name('more-to-delete');
+
+Route::get('/browse-by-category', [HomeController::class, 'browse_by_category'])->name('browse-by-category');
+
+Route::get('/create-browse-by-category', [HomeController::class, 'create_browse_by_category'])->name('create-browse-by-category');
+
+Route::post('/insert-browse-by', [HomeController::class, 'insert_browse_by'])->name('insert-browse-by');
+
+Route::post('/browse-to-category-update', [HomeController::class, 'browse_to_category_update'])->name('browse-to-category-update');
+
+Route::post('/browse-by-delete', [HomeController::class, 'browse_by_delete'])->name('browse-by-delete');
+
+Route::get('/setting-display', [HomeController::class, 'setting_display'])->name('setting-display');
+
+Route::post('/setting-data-update', [HomeController::class, 'setting_data_update'])->name('setting-data-update');
+
+Route::get('/banner-display', [HomeController::class, 'banner_display'])->name('banner-display');
+
+Route::get('/banner-create-data', [HomeController::class, 'banner_create_data'])->name('banner-create-data');
+
+Route::post('/insert-baner-data', [HomeController::class, 'insert_baner_data'])->name('insert-baner-data');
+
+Route::post('/banner-data-update', [HomeController::class, 'banner_data_update'])->name('banner-data-update');
+
+Route::post('/banner-data-delete', [HomeController::class, 'banner_data_delete'])->name('banner-data-delete');
 
 Route::group(['namespace' => 'Subscriptions'], function () {
     Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');

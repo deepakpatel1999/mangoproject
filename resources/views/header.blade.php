@@ -88,6 +88,9 @@
   <div class="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="nav-left">
+        @php
+        $Setting = Settings();
+    @endphp
         <a class="navbar-brand" href="#"><img src="{{asset('assets/img/logo.png')}}"></a>
       </div>
       <div class="nav-right">
@@ -97,6 +100,9 @@
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
+            @php
+            $Setting = Settings();
+        @endphp
             <li class="nav-item active">
               <a class="nav-link" href="#"><img src="{{asset('assets/img/down_ic.png')}}">&nbsp;&nbsp;Download <span class="sr-only">(current)</span></a>
             </li>

@@ -3,18 +3,29 @@
 namespace App\Http\Controllers;
 
 use Auth;
-
 use DB;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Inspiration;
+use App\Models\MostLoveBy;
+use App\Models\EditerPic;
+use App\Models\TrySomething;
+use App\Models\MoreToExplore;
+use App\Models\BrowseByCategory;
+use App\Models\Setting;
+use App\Models\Banner;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use Validator;
 use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\Inspiration as InspirationResource;
-
+use App\Http\Resources\MostLove as MostLoveResource;
+use App\Http\Resources\Editor_picks as Editor_picksResource;
+use App\Http\Resources\TrySomething as TrySomethingResource;
+use App\Http\Resources\BrowseByCategory as BrowseByCategoryResource;
+use App\Http\Resources\Setting as SettingResource;
+use App\Http\Resources\Banner as BannerResource;
 
 
 
@@ -29,7 +40,7 @@ class ApiController extends BaseController
 
     ];
 
-    $input     = $request->all();
+    $input  = $request->all();
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
       $result['id'] = '';
@@ -64,7 +75,9 @@ class ApiController extends BaseController
   {
 
     $rules = [
-      'name' => 'required',
+
+      'first_name' => 'required',
+      'last_name' => 'required',
       'email'    => 'unique:users|required',
       'password' => 'unique:users|required',
 
@@ -74,7 +87,11 @@ class ApiController extends BaseController
 
     $validator = Validator::make($data, $rules);
 
-    $dataa['name'] = '';
+
+
+    $dataa['first_name'] = '';
+
+    $dataa['last_name'] = '';
 
     $dataa['email'] = '';
 
@@ -91,10 +108,11 @@ class ApiController extends BaseController
       die();
     }
 
-    $data_user = array('name' => $data['name'], 'email' => $data['email'], 'password' => bcrypt($data['password']));
+    $data_user = array('name' => $data['first_name'], 'first_name' => $data['first_name'], 'last_name' => $data['last_name'], 'email' => $data['email'], 'password' => bcrypt($data['password']));
 
     $user = User::create($data_user);
-    $token = $user()->createToken('auth_token')->plainTextToken;
+    // $token = $user()->createToken('auth_token')->plainTextToken;
+    //$role = DB::table('roles')->insertGetId[' name' => $data['first_name'],'display_name' => $data['first_name']]);
 
     if ($user) {
 
@@ -130,7 +148,7 @@ class ApiController extends BaseController
   {
     $rules = [
       'title' => 'required',
-      'files'    =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+      'files'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
 
     ];
 
@@ -246,8 +264,10 @@ class ApiController extends BaseController
     $id = $request->id;
     $data = Inspiration::find($id);
     $image = $data->image;
-    $path = public_path() . "/images/" . $image;
-    unlink($path);
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
     $data = Inspiration::find($id)->delete();
 
     if ($data) {
@@ -398,6 +418,1026 @@ class ApiController extends BaseController
     } else {
 
       return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //================ most_love_by_get====================//
+  public function most_love_by_get()
+  {
+
+    $data = most_love_by();
+    if ($data) {
+
+      return $this->sendResponse(MostLoveResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+
+  //================ most love Insert data====================//
+  public function most_loved_insert(Request $request)
+  {
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+      'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+
+    $dataa['description'] = '';
+
+    $dataa['files'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+    $datas['title'] = $request->title;
+    $datas['description'] = $request->description;
+    $datas['image'] = $image;
+    $data_user = array('title' => $data['title'], 'description' => $data['description'], 'image' => $image);
+
+    $user = MostLoveBy::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //=================== most love edit ========================//
+  public function most_love_edit($id)
+  {
+    $data = MostLoveBy::find($id);
+
+    if (is_null($data)) {
+      return $this->sendError('data not found.');
+    }
+
+    return $this->sendResponse(new MostLoveResource($data), 'data retrieved successfully.');
+  }
+  //================ most_love_update data====================//
+  public function most_love_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+    ];
+
+    $data['title'] = $request->title;
+    $data['description'] = $request->description;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+    $dataa['description'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = MostLoveBy::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = MostLoveBy::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //===============Delete Data=====================//
+  public function most_loved_delete($id)
+  {
+    $id = $id;
+    $data = MostLoveBy::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = MostLoveBy::find($id)->delete();
+
+    if ($data) {
+
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //================ editor picks_ display====================//
+  public function editor_picks_display()
+  {
+
+    $data = editor_picks_data();
+    if ($data) {
+
+      return $this->sendResponse(Editor_picksResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+  //================ Edito Insert data====================//
+  public function editor_picks_insert(Request $request)
+  {
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+      'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+
+    $dataa['description'] = '';
+
+    $dataa['image'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+    $datas['title'] = $request->title;
+    $datas['description'] = $request->description;
+    $datas['image'] = $image;
+    $data_user = array('title' => $data['title'], 'description' => $data['description'], 'image' => $image);
+
+    $user = EditerPic::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+      //return $this->sendResponse(new Editor_picksResource($data_user), 'Data created successfully.');
+
+      die();
+    } else {
+
+      //return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+      return $this->sendError('Error validation', $validator->errors());
+
+      die();
+    }
+  }
+
+  //================ editor_picks_ Edit data====================//
+  public function editor_picks_edit($id)
+  {
+    $edit_pic = EditerPic::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new Editor_picksResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ editors_update data====================//
+  public function editors_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+    ];
+
+    $data['title'] = $request->title;
+    $data['description'] = $request->description;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+    $dataa['description'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = EditerPic::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = EditerPic::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //===============Delete Data=====================//
+  public function editors_delete($id)
+  {
+    $id = $id;
+    $data = EditerPic::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = EditerPic::find($id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+
+  //================  try_something display====================//
+  public function get_try_something()
+  {
+
+    $data = try_somthing();
+    if ($data) {
+
+      return $this->sendResponse(TrySomethingResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+
+
+
+  //================ try something insert====================//
+  public function try_something_insert(Request $request)
+  {
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+      'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+
+    $dataa['description'] = '';
+
+    $dataa['image'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+    $datas['title'] = $request->title;
+    $datas['description'] = $request->description;
+    $datas['image'] = $image;
+    $data_user = array('title' => $data['title'], 'description' => $data['description'], 'image' => $image);
+
+    $user = TrySomething::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+
+      die();
+    }
+  }
+  //================ try_something Edit data====================//
+  public function try_something_edit($id)
+  {
+    $edit_pic = TrySomething::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new Editor_picksResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ try_update data====================//
+  public function try_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+    ];
+
+    $data['title'] = $request->title;
+    $data['description'] = $request->description;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+    $dataa['description'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = TrySomething::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = TrySomething::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //===============Delete Data=====================//
+  public function try_delete($id)
+  {
+    $id = $id;
+    $data = TrySomething::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = TrySomething::find($id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  get_more_to_explore display====================//
+  public function get_more_to_explore()
+  {
+
+    $data = more_to_explore();
+    if ($data) {
+
+      return $this->sendResponse(TrySomethingResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+
+  //================ more_to   insert====================//
+  public function more_to_insert(Request $request)
+  {
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+      'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+
+    $dataa['description'] = '';
+
+    $dataa['image'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+    $datas['title'] = $request->title;
+    $datas['description'] = $request->description;
+    $datas['image'] = $image;
+    $data_user = array('title' => $data['title'], 'description' => $data['description'], 'image' => $image);
+
+    $user = MoreToExplore::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+
+      die();
+    }
+  }
+  //================ more_to_explore Edit data====================//
+  public function more_to_explore_edit($id)
+  {
+    $edit_pic = MoreToExplore::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new Editor_picksResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ more_to_explore_update data====================//
+  public function more_to_explore_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+    ];
+
+    $data['title'] = $request->title;
+    $data['description'] = $request->description;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+    $dataa['description'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = MoreToExplore::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = MoreToExplore::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //===============more_to_explore_delete Data=====================//
+  public function more_to_explore_delete($id)
+  {
+    $id = $id;
+    $data = MoreToExplore::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = MoreToExplore::find($id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //================  browse_by_category display====================//
+  public function browse_by_category_get()
+  {
+
+    $data = Browse_By_Category();
+    if ($data) {
+
+      return $this->sendResponse(BrowseByCategoryResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+
+  //================ browse_by_category insert====================//
+  public function browse_by_category_insert(Request $request)
+  {
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+      'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+
+    $dataa['description'] = '';
+
+    $dataa['image'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+    $datas['title'] = $request->title;
+    $datas['description'] = $request->description;
+    $datas['image'] = $image;
+    $data_user = array('title' => $data['title'], 'description' => $data['description'], 'image' => $image);
+
+    $user = BrowseByCategory::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+
+      die();
+    }
+  }
+  //================ browse_by_category Edit data====================//
+  public function browse_by_category_edit($id)
+  {
+    $edit_pic = BrowseByCategory::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new BrowseByCategoryResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ browse_by_category_update data====================//
+  public function browse_by_category_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'title' => 'required',
+      'description' => 'required',
+    ];
+
+    $data['title'] = $request->title;
+    $data['description'] = $request->description;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['title'] = '';
+    $dataa['description'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('image')) {
+      $imagePath = $request->file('image');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = BrowseByCategory::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = BrowseByCategory::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //===============browse_by_category_delete Data=====================//
+  public function browse_by_category_delete($id)
+  {
+    $id = $id;
+    $data = BrowseByCategory::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = BrowseByCategory::find($id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  browse_by_category display====================//
+  public function setting()
+  {
+
+    $data = Settings();
+    if ($data) {
+
+      return $this->sendResponse(SettingResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+  //================ setting Edit data====================//
+  public function setting_edit($id)
+  {
+    $edit_pic = Setting::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new SettingResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ setting_update data====================//
+  public function setting_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+    $rules = [
+      'address' => 'required',
+      'contact' => 'required',
+      'email' => 'required',
+      'about_us' => 'required',
+
+    ];
+
+    $data['address'] = $request->address;
+    $data['contact'] = $request->contact;
+    $data['email'] = $request->email;
+    $data['about_us'] = $request->about_us;
+    $data['id'] = $request->id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['address'] = '';
+    $dataa['contact'] = '';
+    $dataa['email'] = '';
+    $dataa['about_us'] = '';
+
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('logo')) {
+      $imagePath = $request->file('logo');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['files'] = $image;
+      $user = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us, 'updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  banner display====================//
+  public function banner()
+  {
+
+    $data = Banners();
+    if ($data) {
+
+      return $this->sendResponse(BannerResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+
+  //================ banner insert====================//
+  public function banner_insert(Request $request)
+  {
+    $rules = [
+
+      'banner'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+    ];
+
+    $data = $request->all();
+
+    $validator = Validator::make($data, $rules);
+
+
+    $dataa['banner'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    if ($request->file('banner')) {
+      $imagePath = $request->file('banner');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+    } else {
+      $image = '1656318034.image_02.jpg';
+    }
+
+    $datas['banner'] = $image;
+    
+    $data_user = array('banner' => $image);
+
+    $user = Banner::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data_user, 'message' => 'Data Register Successfully'));
+
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+
+      die();
+    }
+  }
+  //================ banner Edit data====================//
+  public function banner_edit($id)
+  {
+    $edit_pic = Banner::find($id);
+
+    if (is_null($edit_pic)) {
+      return $this->sendError('Product not found.');
+    }
+
+    return $this->sendResponse(new BannerResource($edit_pic), 'Product retrieved successfully.');
+  }
+  //================ banner_update data====================//
+  public function banner_update(Request $request)
+  {
+    $id = $request->id;
+    $updated_at = date("Y-m-d H:i:s");
+
+    if ($request->file('banner')) {
+      $imagePath = $request->file('banner');
+      $image = time() . '.' . $imagePath->getClientOriginalName();
+      $destinationPath = public_path('/images');
+      $imagePath->move($destinationPath, $image);
+      $data['banner'] = $image;
+      $user = Banner::where('id', $id)->update(['banner' => $image, 'updated_at' => $updated_at]);
+    } else {
+
+      $user = Banner::where('id', $id)->update(['updated_at' => $updated_at]);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+
+  //===============banner_delete Data=====================//
+  public function banner_delete($id)
+  {
+    $id = $id;
+    $data = Banner::find($id);
+    $image = $data->image;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = Banner::find($id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Data deleted successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
 
       die();
     }
