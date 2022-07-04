@@ -713,7 +713,7 @@ class HomeController extends Controller
       $imageName = time() . '.' . $imagePath->getClientOriginalName();
       $destinationPath = public_path('/images');
       $imagePath->move($destinationPath, $imageName);
-      $data = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us, 'image' => $imageName, 'updated_at' => $updated_at]);
+      $data = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us, 'logo' => $imageName, 'updated_at' => $updated_at]);
     } else {
       $data = Setting::where('id', $id)->update(['address' => $request->address, 'contact' => $request->contact, 'email' => $request->email, 'about_us' => $request->about_us,  'updated_at' => $updated_at]);
     }

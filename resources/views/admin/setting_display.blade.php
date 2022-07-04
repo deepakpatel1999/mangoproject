@@ -107,8 +107,8 @@
                                     <label for=""> email:</label>
 
                                     <br>
-                                    <input type="text" id="" name="email"
-                                        value="{{ @$value->email }}" placeholder="Email..">
+                                    <input type="text" id="" name="email" value="{{ @$value->email }}"
+                                        placeholder="Email..">
                                     <div>
                                         @if ($errors->has('email'))
                                             <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
             @endforeach
-           
+
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                     <div class="x_title">
@@ -210,7 +210,7 @@
                                                     data-target="#editmodel{{ $value->id }}"><i
                                                         class="fas fa-edit" style="font-size:20px;color:blue"></i>
                                                     Edit</a>
-                                                
+
 
 
                                             </td>

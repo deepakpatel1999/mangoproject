@@ -144,14 +144,14 @@
                 <div class="col-md-12">
                     <div class="ad_banner">
                         <div class="ad_banner_inner">
-                          @php
-                          $Banner = Banners();
-                      @endphp
+                            @php
+                                $Banner = Banners();
+                            @endphp
                             <div class="ad-banner owl-carousel">
-                              @foreach ($Banner as $Banners)
-                                <div class="ad_image"><a href="#"><img
-                                  src="{{ asset('/images/' . @$Banners->banner) }}"></a>
-                                </div>
+                                @foreach ($Banner as $Banners)
+                                    <div class="ad_image"><a href="#"><img
+                                                src="{{ asset('/images/' . @$Banners->banner) }}"></a>
+                                    </div>
                                 @endforeach
                                 {{-- <div class="ad_image"><a href="#"><img
                                             src="{{ asset('/assets/img/banner-ad/banner_02.jpg') }}" alt="ad_02"></a>
@@ -227,38 +227,39 @@
                                 <a href="#">See All</a>
                             </div>
                             @php
-                            $most_love = most_love_by();
-                        @endphp
+                                $most_love = most_love_by();
+                            @endphp
                             <div class="first_event_carousel owl-carousel">
                                 @foreach ($most_love as $most_loved)
-                                <div class="event_box">
+                                    <div class="event_box">
 
-                                    <div class="events_des_image">
-                                      <img src="{{ asset('/images/' . @$most_loved->image) }}" alt="ad_01">
-                                        <div class="event_code">AED 65</div>
-                                    </div>
-                                    <div class="event_description">
-                                        <h3>{{@$most_loved->title}}</h3>
-                                        <div class="event_btm_des">
-                                            <div class="left_section">
-                                                <span class="small_text">{{@$most_loved->description}}l</span>
-                                                <button type="button" class="btn bn_btn">Book Now!</button>
-                                            </div>
-                                            <div class="right_section">
-                                                <div class="review">
-                                                    <ul>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                    </ul>
+                                        <div class="events_des_image">
+                                            <img src="{{ asset('/images/' . @$most_loved->image) }}"
+                                                alt="ad_01">
+                                            <div class="event_code">AED 65</div>
+                                        </div>
+                                        <div class="event_description">
+                                            <h3>{{ @$most_loved->title }}</h3>
+                                            <div class="event_btm_des">
+                                                <div class="left_section">
+                                                    <span class="small_text">{{ @$most_loved->description }}l</span>
+                                                    <button type="button" class="btn bn_btn">Book Now!</button>
                                                 </div>
-                                                <button type="button" class="btn rm_btn">Read More</button>
+                                                <div class="right_section">
+                                                    <div class="review">
+                                                        <ul>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn rm_btn">Read More</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endforeach
                                 <!-- second box -->
                                 {{-- <div class="event_box">
@@ -368,39 +369,40 @@
                                 <a href="#">See All</a>
                             </div>
                             @php
-                            $editor_pick = editor_picks_data();
-                        @endphp
+                                $editor_pick = editor_picks_data();
+                            @endphp
                             <div class="sec_event_carousel owl-carousel">
-                              @foreach ($editor_pick as $editor_picks)
-                                <div class="event_box">
-                                    <div class="events_des_image">
-                                      <img src="{{ asset('/images/' . @$editor_picks->image) }}" alt="ad_01">
-                                        <div class="event_code">AED 65</div>
-                                    </div>
-                                    <div class="event_description">
-                                        <h3>{{@$editor_picks->title}}</h3>
-                                        <div class="event_btm_des">
-                                            <div class="left_section">
-                                                <span class="small_text">{{@$editor_picks->description}}</span>
-                                                <button type="button" class="btn bn_btn">Book Now!</button>
-                                            </div>
-                                            <div class="right_section">
-                                                <div class="review">
-                                                    <ul>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                    </ul>
+                                @foreach ($editor_pick as $editor_picks)
+                                    <div class="event_box">
+                                        <div class="events_des_image">
+                                            <img src="{{ asset('/images/' . @$editor_picks->image) }}"
+                                                alt="ad_01">
+                                            <div class="event_code">AED 65</div>
+                                        </div>
+                                        <div class="event_description">
+                                            <h3>{{ @$editor_picks->title }}</h3>
+                                            <div class="event_btm_des">
+                                                <div class="left_section">
+                                                    <span class="small_text">{{ @$editor_picks->description }}</span>
+                                                    <button type="button" class="btn bn_btn">Book Now!</button>
                                                 </div>
-                                                <button type="button" class="btn rm_btn">Read More</button>
+                                                <div class="right_section">
+                                                    <div class="review">
+                                                        <ul>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn rm_btn">Read More</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- second box -->
-                                {{-- <div class="event_box">
+                                    <!-- second box -->
+                                    {{-- <div class="event_box">
                                     <div class="events_des_image">
                                         <img src="{{ asset('assets/img/banner-ad/image_02.jpg') }}" alt="ad_02">
                                         <div class="event_code">AED 65</div>
@@ -485,7 +487,7 @@
                                 </div> --}}
                                 @endforeach
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -507,37 +509,38 @@
                                 <a href="#">See All</a>
                             </div>
                             @php
-                            $try_somthing = try_somthing();
-                        @endphp
+                                $try_somthing = try_somthing();
+                            @endphp
                             <div class="third_event_carousel owl-carousel">
-                              @foreach ($try_somthing as $try_somthings)
-                                <div class="event_box">
-                                    <div class="events_des_image">
-                                      <img src="{{ asset('/images/' . @$try_somthings->image) }}" alt="ad_01">
-                                        <div class="event_code">AED 65</div>
-                                    </div>
-                                    <div class="event_description">
-                                        <h3>{{@$try_somthings->title}}</h3>
-                                        <div class="event_btm_des">
-                                            <div class="left_section">
-                                                <span class="small_text">{{@$try_somthings->description}}</span>
-                                                <button type="button" class="btn bn_btn">Book Now!</button>
-                                            </div>
-                                            <div class="right_section">
-                                                <div class="review">
-                                                    <ul>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                    </ul>
+                                @foreach ($try_somthing as $try_somthings)
+                                    <div class="event_box">
+                                        <div class="events_des_image">
+                                            <img src="{{ asset('/images/' . @$try_somthings->image) }}"
+                                                alt="ad_01">
+                                            <div class="event_code">AED 65</div>
+                                        </div>
+                                        <div class="event_description">
+                                            <h3>{{ @$try_somthings->title }}</h3>
+                                            <div class="event_btm_des">
+                                                <div class="left_section">
+                                                    <span class="small_text">{{ @$try_somthings->description }}</span>
+                                                    <button type="button" class="btn bn_btn">Book Now!</button>
                                                 </div>
-                                                <button type="button" class="btn rm_btn">Read More</button>
+                                                <div class="right_section">
+                                                    <div class="review">
+                                                        <ul>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn rm_btn">Read More</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endforeach
                                 <!-- second box -->
                                 {{-- <div class="event_box">
@@ -640,7 +643,7 @@
             <div class="blog_section_outer">
                 <div class="blog_section_inner">
                     <div class="row">
-                      @php
+                        @php
                             $more_to_explore = more_to_explore();
                         @endphp
                         <div class="col-md-8">
@@ -649,19 +652,20 @@
                                 <a href="#">See All</a>
                             </div>
                             @foreach ($more_to_explore as $more_to_explores)
-                            <div class="blog-posts-item">
-                                <div class="blog-posts-inner">
-                                    <div class="blog_image">
-                                      <img src="{{ asset('/images/' . @$more_to_explores->image) }}" alt="ad_01">
-                                        <span class="blog_cat">Adventure</span>
-                                    </div>
-                                    <div class="blog_desc">
-                                        <h2>{{@$try_somthings->title}}</h2>
-                                        <p>{{@$try_somthings->description}}</p>
-                                        <button type="button" class="btn blog_rm">Read More</button>
+                                <div class="blog-posts-item">
+                                    <div class="blog-posts-inner">
+                                        <div class="blog_image">
+                                            <img src="{{ asset('/images/' . @$more_to_explores->image) }}"
+                                                alt="ad_01">
+                                            <span class="blog_cat">Adventure</span>
+                                        </div>
+                                        <div class="blog_desc">
+                                            <h2>{{ @$try_somthings->title }}</h2>
+                                            <p>{{ @$try_somthings->description }}</p>
+                                            <button type="button" class="btn blog_rm">Read More</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                             {{-- <div class="divider"></div>
                             <div class="blog-posts-item">
@@ -763,8 +767,8 @@
                                                 </a>
                                             </h5>
                                         </div>
-                                        <div id="collapse-B" class="collapse" data-parent="#content"
-                                            role="tabpanel" aria-labelledby="heading-B">
+                                        <div id="collapse-B" class="collapse" data-parent="#content" role="tabpanel"
+                                            aria-labelledby="heading-B">
                                             <div class="card-body">
                                                 [Tab content B]
                                             </div>
@@ -781,8 +785,8 @@
                                                 </a>
                                             </h5>
                                         </div>
-                                        <div id="collapse-C" class="collapse" role="tabpanel"
-                                            data-parent="#content" aria-labelledby="heading-C">
+                                        <div id="collapse-C" class="collapse" role="tabpanel" data-parent="#content"
+                                            aria-labelledby="heading-C">
                                             <div class="card-body">
                                                 [Tab content C]
                                             </div>
@@ -811,33 +815,35 @@
                                 <p>Lorem ipsum dolor sit amet consectetuer adipiscing elit sed diam nonummy</p>
                             </div>
                             @php
-                            $Browse_By_Category = Browse_By_Category();
-                        @endphp
+                                $Browse_By_Category = Browse_By_Category();
+                            @endphp
                             <div class="browse_cat_carousel owl-carousel">
-                              @foreach ($more_to_explore as $more_to_explores)
-                                <div class="event_box browse_desc_box">
-                                    <div class="events_des_image">
-                                      <img src="{{ asset('/images/' . @$more_to_explores->image) }}" alt="ad_01">
-                                    </div>
-                                    <div class="event_description browse_desc">
-                                        <h3>{{@$try_somthings->title}}</h3>
-                                        <div class="event_btm_des">
-                                            <div class="left_section">
-                                                <span class="small_text">{{@$try_somthings->description}}</span>
-                                                <div class="review">
-                                                    <ul>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                        <li><i class="fas fa-star"></i></li>
-                                                    </ul>
+                                @foreach ($more_to_explore as $more_to_explores)
+                                    <div class="event_box browse_desc_box">
+                                        <div class="events_des_image">
+                                            <img src="{{ asset('/images/' . @$more_to_explores->image) }}"
+                                                alt="ad_01">
+                                        </div>
+                                        <div class="event_description browse_desc">
+                                            <h3>{{ @$try_somthings->title }}</h3>
+                                            <div class="event_btm_des">
+                                                <div class="left_section">
+                                                    <span class="small_text">{{ @$try_somthings->description }}</span>
+                                                    <div class="review">
+                                                        <ul>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn browse_rm_btn">Read
+                                                        More</button>
                                                 </div>
-                                                <button type="button" class="btn browse_rm_btn">Read More</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endforeach
                                 <!-- second box -->
                                 {{-- <div class="event_box browse_desc_box">
@@ -939,7 +945,8 @@
                 <div class="row">
                     <div class="col-md-7">
                         <div class="ad_content">
-                            <h1>Travel with kids made easy:<br>best airlines for families | <br><span style="">HoneyKids
+                            <h1>Travel with kids made easy:<br>best airlines for families | <br><span
+                                    style="">HoneyKids
                                     Asia</span></h1>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                                 ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus </p>
