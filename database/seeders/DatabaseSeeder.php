@@ -10,13 +10,18 @@ use Database\Seeders\InspirationSeeder;
 use Database\Seeders\PlanSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\CreateUsersTable;
-use Database\Seeders\MostLoveBy;
+use Database\Seeders\MostLoveBySeeder;
 use Database\Seeders\EditerPicSeeder;
 use Database\Seeders\TrySomethingSeeder;
 use Database\Seeders\MoreToExploreSeeder;
 use Database\Seeders\BrowseByCategorySeeder;
 use Database\Seeders\SettingSeeder;
 use Database\Seeders\BannerSeeder;
+use Database\Seeders\EShoperBannerSeeder;
+use Database\Seeders\FeaturItemSeeder;
+
+
+
 class DatabaseSeeder extends Seeder
 {
   /**
@@ -34,13 +39,15 @@ class DatabaseSeeder extends Seeder
     $this->call(PermissionSeeder::class);
     $this->call(RoleSeeder::class);
     $this->call(PlanSeeder::class);
-    $this->call(MostLoveBy::class);
+    $this->call(MostLoveBySeeder::class);
     $this->call(EditerPicSeeder::class);
     $this->call(TrySomethingSeeder::class);
     $this->call(MoreToExploreSeeder::class);
     $this->call(BrowseByCategorySeeder::class);
     $this->call(SettingSeeder::class);
     $this->call(BannerSeeder::class);
-    
+    $this->call(EShoperBannerSeeder::class);
+    $this->call(FeaturItemSeeder::class);
+
   }
 }

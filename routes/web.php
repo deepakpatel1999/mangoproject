@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TrySomethingController;
+use App\Http\Controllers\EshoperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +144,17 @@ Route::post('/insert-baner-data', [HomeController::class, 'insert_baner_data'])-
 Route::post('/banner-data-update', [HomeController::class, 'banner_data_update'])->name('banner-data-update');
 
 Route::post('/banner-data-delete', [HomeController::class, 'banner_data_delete'])->name('banner-data-delete');
+
+/*E-SHOPPER START*/
+Route::get('/e-shopper-banner', [EshoperController::class, 'e_shopper_banner'])->name('e-shopper-banner');
+
+Route::get('/add-shop-baner', [EshoperController::class, 'add_shop_baner'])->name('add-shop-baner');
+
+Route::post('/insert-shop-banner', [EshoperController::class, 'insert_shop_banner'])->name('insert-shop-banner');
+
+Route::post('/e-shop-banner-update', [EshoperController::class, 'e_shop_banner_update'])->name('e-shop-banner-update');
+
+Route::post('/e-shopper-banner-delete', [EshoperController::class, 'e_shopper_banner_delete'])->name('e-shopper-banner-delete');
 
 Route::group(['namespace' => 'Subscriptions'], function () {
     Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');

@@ -110,4 +110,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  
     Route::get('/banner-delete/{id}', [ApiController::class, 'banner_delete'])->name('banner-delete');
 
+
+    //E-Shopper//
+    Route::get('/shop-banner-show', [ApiController::class, 'shop_banner_show'])->name('shop-banner-show');
+
+    Route::post('/create-shop-banner', [ApiController::class, 'create_shop_banner'])->name('create-shop-banner');
+   
+    Route::get('shop-banner-edit/{id}', [ApiController::class, 'shop_banner_edit'])->name('shop-banner-edit');
+
+    Route::post('/shop-banner-update', [ApiController::class, 'shop_banner_update'])->name('shop-banner-update');
+
+    Route::get('/shop-banner-delete/{id}', [ApiController::class, 'shope_banner_delete'])->name('shope-banner-delete');
+
+    Route::get('/featur-item-show', [ApiController::class, 'featur_item_show'])->name('featur-item-show');
+
 });

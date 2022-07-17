@@ -14,6 +14,9 @@ use App\Models\MoreToExplore;
 use App\Models\BrowseByCategory;
 use App\Models\Setting;
 use App\Models\Banner;
+use App\Models\E_ShoperBanner;
+use App\Models\FeaturItem;
+
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
@@ -26,6 +29,8 @@ use App\Http\Resources\TrySomething as TrySomethingResource;
 use App\Http\Resources\BrowseByCategory as BrowseByCategoryResource;
 use App\Http\Resources\Setting as SettingResource;
 use App\Http\Resources\Banner as BannerResource;
+use App\Http\Resources\FeaturItem as FeaterItemResource
+;
 
 
 
@@ -1442,4 +1447,178 @@ class ApiController extends BaseController
       die();
     }
   }
+  //================  shop_banner display====================//
+  public function shop_banner_show()
+  {
+
+    $data = e_shopper_banner();
+   
+    if ($data) {
+
+      return $this->sendResponse(TrySomethingResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
+ //================ create_shop_banner insert====================//
+ public function create_shop_banner(Request $request)
+ {
+   $rules = [
+     'title' => 'required',
+     'description' => 'required',
+     'image'    =>  'required|image|mimes:jpeg,png,jpg|max:2048',
+
+   ];
+
+   $data = $request->all();
+
+   $validator = Validator::make($data, $rules);
+
+   $dataa['title'] = '';
+
+   $dataa['description'] = '';
+
+   $dataa['image'] = '';
+
+   $error_msg = '';
+
+   $error_msg = $validator->errors()->first();
+
+   if ($validator->fails()) {
+
+     return $this->sendError('Validation Error.', $validator->errors());
+     die();
+   }
+   if ($request->file('image')) {
+     $imagePath = $request->file('image');
+     $image = time() . '.' . $imagePath->getClientOriginalName();
+     $destinationPath = public_path('/images');
+     $imagePath->move($destinationPath, $image);
+   } else {
+     $image = '1656318034.image_02.jpg';
+   }
+   $datas['title'] = $request->title;
+   $datas['description'] = $request->description;
+   $datas['image'] = $image;
+   $data_user = array('title' => $data['title'], 'description' => $data['description'], 'banner' => $image);
+
+   $user = E_ShoperBanner::create($data_user);
+
+   if ($user) {
+
+     return response()->json(array('status' => 'true', 'data' => $datas, 'message' => 'Data Register Successfully'));
+
+     die();
+   } else {
+
+     return $this->sendError('Error validation', $validator->errors());
+
+     die();
+   }
+ }
+ //================ shop_banner Edit data====================//
+ public function shop_banner_edit($id)
+ {
+   $data = E_ShoperBanner::find($id);
+
+   if (is_null($data)) {
+     return $this->sendError('Product not found.');
+   }
+
+   return $this->sendResponse(new BrowseByCategoryResource($data), 'Product retrieved successfully.');
+ }
+ //================ shop_banner_update data====================//
+ public function shop_banner_update(Request $request)
+ {
+   $id = $request->id;
+   $updated_at = date("Y-m-d H:i:s");
+   $rules = [
+     'title' => 'required',
+     'description' => 'required',
+   ];
+
+   $data['title'] = $request->title;
+   $data['description'] = $request->description;
+   $data['id'] = $request->id;
+
+   $validator = Validator::make($data, $rules);
+
+   $dataa['title'] = '';
+   $dataa['description'] = '';
+
+   $error_msg = '';
+
+   $error_msg = $validator->errors()->first();
+
+   if ($validator->fails()) {
+
+
+     return $this->sendError('Validation Error.', $validator->errors());
+     die();
+   }
+   if ($request->file('image')) {
+     $imagePath = $request->file('image');
+     $image = time() . '.' . $imagePath->getClientOriginalName();
+     $destinationPath = public_path('/images');
+     $imagePath->move($destinationPath, $image);
+     $data['files'] = $image;
+     $user = E_ShoperBanner::where('id', $id)->update(['title' => $request->title, 'banner' =>$image, 'description' => $request->description, 'updated_at' => $updated_at]);
+   } else {
+
+     $user = E_ShoperBanner::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
+   }
+   if ($user) {
+
+     return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Update Successfully'));
+
+     die();
+   } else {
+
+     return response()->json(array('status' => 'false', 'data' => $dataa, 'message' => 'Somthing went wrong'));
+
+     die();
+   }
+ }
+ public function shope_banner_delete($id)
+ {
+   $id = $id;
+   $data = E_ShoperBanner::find($id);
+   $image = $data->banner;
+   if ($image != '') {
+     $path = public_path() . "/images/" . $image;
+     unlink($path);
+   }
+   $data = E_ShoperBanner::find($id)->delete();
+
+   if ($data) {
+
+     return $this->sendResponse([], 'Data deleted successfully.');
+     die();
+   } else {
+
+     return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+     die();
+   }
+ }
+  //================  featue_item_show display====================//
+  public function featur_item_show()
+  {
+
+    $data = FeaturItem();
+   
+    if ($data) {
+
+      return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
+      die();
+    } else {
+
+      return $this->sendError('Error validation', $validator->errors());
+      die();
+    }
+  }
 }
+

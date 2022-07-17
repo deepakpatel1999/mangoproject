@@ -8,6 +8,9 @@ use App\Models\MoreToExplore;
 use App\Models\BrowseByCategory;
 use App\Models\Setting;
 use App\Models\Banner;
+use App\Models\E_ShoperBanner;
+use App\Models\FeaturItem;
+
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -69,6 +72,21 @@ if (!function_exists('Banners')) {
   function Banners()
   {
     $var = Banner::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('e_shopper_banner')) {
+  function e_shopper_banner()
+  {
+    $var = E_ShoperBanner::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+
+if (!function_exists('FeaturItem')) {
+  function FeaturItem()
+  {
+    $var = FeaturItem::orderBy('id', 'desc')->get();
     return $var;
   }
 }
