@@ -10,7 +10,12 @@ use App\Models\Setting;
 use App\Models\Banner;
 use App\Models\E_ShoperBanner;
 use App\Models\FeaturItem;
-
+use App\Models\Reccommeded;
+use App\Models\T_Shirt;
+use App\Models\Blazers;
+use App\Models\Sunglass;
+use App\Models\KidsData;
+use App\Models\PoloShirt;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -90,4 +95,46 @@ if (!function_exists('FeaturItem')) {
     return $var;
   }
 }
-?>
+if (!function_exists('recommended_show')) {
+  function recommended_show()
+  {
+    $var = Reccommeded::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('T_Shirt')) {
+  function T_Shirt()
+  {
+    $var = T_Shirt::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('Blazer')) {
+  function Blazer()
+  {
+    $var = Blazers::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('Sunglasses')) {
+  function Sunglasses()
+  {
+    $var = Sunglass::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('KidsData')) {
+  function KidsData()
+  {
+    $var = KidsData::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+if (!function_exists('PoloShirt')) {
+  function PoloShirt()
+  {
+    $var = PoloShirt::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+

@@ -19,6 +19,13 @@ use Database\Seeders\SettingSeeder;
 use Database\Seeders\BannerSeeder;
 use Database\Seeders\EShoperBannerSeeder;
 use Database\Seeders\FeaturItemSeeder;
+use Database\Seeders\ReccommededSeeder;
+use Database\Seeders\TShirtSeeder;
+use Database\Seeders\BlazersSeeder;
+use Database\Seeders\SunglassSeeder;
+use Database\Seeders\KidsDataSeeder;
+use Database\Seeders\PoloShirtSeeder;
+
 
 
 
@@ -48,6 +55,11 @@ class DatabaseSeeder extends Seeder
     $this->call(BannerSeeder::class);
     $this->call(EShoperBannerSeeder::class);
     $this->call(FeaturItemSeeder::class);
-
+    $this->call(ReccommededSeeder::class);
+    $this->call(TShirtSeeder::class);
+    $this->call(BlazersSeeder::class);
+    $this->call(SunglassSeeder::class);
+    $this->call(KidsDataSeeder::class);
+    $this->call(PoloShirtSeeder::class);
   }
 }
