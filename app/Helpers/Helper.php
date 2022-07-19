@@ -16,6 +16,8 @@ use App\Models\Blazers;
 use App\Models\Sunglass;
 use App\Models\KidsData;
 use App\Models\PoloShirt;
+use App\Models\ShopCategory;
+
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -134,6 +136,14 @@ if (!function_exists('PoloShirt')) {
   function PoloShirt()
   {
     $var = PoloShirt::orderBy('id', 'desc')->get();
+    return $var;
+  }
+}
+
+if (!function_exists('show_category')) {
+  function show_category()
+  {
+    $var = ShopCategory::orderBy('id', 'desc')->get();
     return $var;
   }
 }

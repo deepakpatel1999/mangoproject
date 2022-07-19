@@ -167,7 +167,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bodyData">
-                                    {{-- <?php// $i = 0; ?>  --}}
+                                    {{-- <?php// $i = 0; ?> ?> --}}
                                     {{-- @foreach ($Subcription_list as $Subcription_lists)
                                         <?php ///$i++;
                                         ?>
@@ -270,15 +270,15 @@
                 var bodyData = '';
                 var i = 1;
                 $.each(resultData, function(index, row) {
-                  bodyData += "<tr>"
-                        bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
-                            "</td><td>" + row.user.last_name +
-                            "</td><td>" +
-                            row.user.email + "</td><td>" + row.name + "</td><td>" + row
-                            .stripe_status + "</td><td>" + row
-                            .ends_at + "</td><td>" + row
-                            .created_at + "</td>"
-                        bodyData += "</tr>";
+                    bodyData += "<tr>"
+                    bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
+                        "</td><td>" + row.user.last_name +
+                        "</td><td>" +
+                        row.user.email + "</td><td>" + row.name + "</td><td>" + row
+                        .stripe_status + "</td><td>" + row
+                        .ends_at + "</td><td>" + row
+                        .created_at + "</td>"
+                    bodyData += "</tr>";
 
                 })
                 $(".bodyData").empty();
@@ -312,7 +312,7 @@
                     var bodyData = '';
                     var i = 1;
                     $.each(resultData, function(index, row) {
-                      bodyData += "<tr>"
+                        bodyData += "<tr>"
                         bodyData += "<td>" + i++ + "</td><td>" + row.user.first_name +
                             "</td><td>" + row.user.last_name +
                             "</td><td>" +

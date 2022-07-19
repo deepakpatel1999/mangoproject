@@ -791,23 +791,22 @@ class HomeController extends Controller
       return back()->with('failed', 'Something wrong.');
     }
   }
-   //=============== more_to_delete =====================//
-   public function banner_data_delete(Request $request)
-   {
-     $id = $request->id;
-     $data = Banner::find($id);
- 
-     $image = $data->banner;
-     if ($image != '') {
-       $path = public_path() . "/images/" . $image;
-       unlink($path);
-     }
-     $data = Banner::find($id)->delete();
-     if ($data) {
-       return back()->with('delete-success', 'Delete Successfuly.');
-     } else {
-       return back()->with('delete-failed', 'Something wrong.');
-     }
-   }
- 
+  //=============== more_to_delete =====================//
+  public function banner_data_delete(Request $request)
+  {
+    $id = $request->id;
+    $data = Banner::find($id);
+
+    $image = $data->banner;
+    if ($image != '') {
+      $path = public_path() . "/images/" . $image;
+      unlink($path);
+    }
+    $data = Banner::find($id)->delete();
+    if ($data) {
+      return back()->with('delete-success', 'Delete Successfuly.');
+    } else {
+      return back()->with('delete-failed', 'Something wrong.');
+    }
+  }
 }

@@ -156,6 +156,8 @@ Route::post('/e-shop-banner-update', [EshoperController::class, 'e_shop_banner_u
 
 Route::post('/e-shopper-banner-delete', [EshoperController::class, 'e_shopper_banner_delete'])->name('e-shopper-banner-delete');
 
+Route::get('/product-list', [EshoperController::class, 'product_list'])->name('product-list');
+
 Route::group(['namespace' => 'Subscriptions'], function () {
     Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');
 

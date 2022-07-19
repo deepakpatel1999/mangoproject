@@ -25,7 +25,8 @@ use Database\Seeders\BlazersSeeder;
 use Database\Seeders\SunglassSeeder;
 use Database\Seeders\KidsDataSeeder;
 use Database\Seeders\PoloShirtSeeder;
-
+use Database\Seeders\ProductSeeder;
+use Database\Seeders\ShopCategorySeeder;
 
 
 
@@ -61,5 +62,10 @@ class DatabaseSeeder extends Seeder
     $this->call(SunglassSeeder::class);
     $this->call(KidsDataSeeder::class);
     $this->call(PoloShirtSeeder::class);
+    $this->call(ProductSeeder::class);
+    $this->call(ShopCategorySeeder::class);
+
   }
 }
+
+

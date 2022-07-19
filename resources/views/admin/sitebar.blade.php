@@ -95,6 +95,7 @@
  			<li><a><i class="fa fa-edit"></i> E-SHOPPER <span class="fa fa-chevron-down"></span></a>
  				<ul class="nav child_menu">
 				 <li><a href="{{ route('e-shopper-banner') }}">  E-Shoper Banner </a></li>
+         <li><a href="{{ route('product-list') }}"> Procduct </a></li>
  					
 
  				</ul>

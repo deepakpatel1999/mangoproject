@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\E_ShoperBanner;
+use App\Models\Product;
+use App\Models\ShopCategory;
+
+
 use DB;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -107,5 +111,14 @@ class EshoperController extends Controller
      return back()->with('delete-failed', 'Something wrong.');
    }
  }
+//==================  product_list data display===================//
+public function product_list()
+{
+  
+  $product = Product::with('ShopCategory')->get();
+  // $product = Subscription::with('user')->whereRelation('user', 'first_name', 'like', '%' . $request->status . '%')->orWhereRelation('user', 'last_name', 'like', '%' . $request->status . '%')->get();
 
+// print_r($product);
+  return view('admin.product_list',compact('product'));
+}
 }

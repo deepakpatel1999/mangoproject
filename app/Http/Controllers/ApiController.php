@@ -22,6 +22,10 @@ use App\Models\Blazers;
 use App\Models\Sunglass;
 use App\Models\KidsData;
 use App\Models\PoloShirt;
+use App\Models\ShopCategory;
+use App\Models\Product;
+
+
 
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -36,6 +40,8 @@ use App\Http\Resources\BrowseByCategory as BrowseByCategoryResource;
 use App\Http\Resources\Setting as SettingResource;
 use App\Http\Resources\Banner as BannerResource;
 use App\Http\Resources\FeaturItem as FeaterItemResource;
+use App\Http\Resources\ShopCategories as ShopCategoryResource;
+
 
 
 
@@ -2757,5 +2763,64 @@ class ApiController extends BaseController
 
       die();
     }
+  }
+  //================  shop_category display====================//
+  public function shop_category()
+  {
+
+    $data = show_category();
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(ShopCategoryResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================  all_product display====================//
+  public function all_product()
+  {
+    $data = Product::get();
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
+    die();
+  }
+
+  //================  features_filter_product display====================//
+  public function features_filter_product()
+  {
+
+    $data = Product::get()->where('is_features', 1);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================  category_filter_product display====================//
+  public function category_filter_product($id)
+  {
+
+    $data = Product::get()->where('cat_id', $id);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
+  }
+  //================  recommended_filter_product display====================//
+  public function recommended_filter_product()
+  {
+
+    $data = Product::get()->where('is_recommanded', 1);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
+    die();
   }
 }
