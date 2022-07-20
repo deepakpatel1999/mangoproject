@@ -3,6 +3,7 @@
 @include('admin.nav')
 
 <!-- page content -->
+
 @if (session('success'))
     <div class=" alert_show alert alert-success col-sm-6 col-md-6 text-center" role="alert">
         <button type="button" class="close" data-dismiss="alert">×</button>
@@ -54,7 +55,7 @@
         </div>
 
 
-        <a href="{{ route('add-product') }}" class="btn btn-primary btn-sm"
+        <a href="{{ route('add-category') }}" class="btn btn-primary btn-sm"
             onclick="return confirm('Do you really want to Add List?')"><i class="fa fa-plus"
                 aria-hidden="true"></i>Add</a>
 
@@ -66,15 +67,87 @@
             <div class="clearfix"></div>
 
             <div class="clearfix"></div>
-
             @php
-                
+                $var = show_category();
             @endphp
+            @foreach ($var as $value)
+                <div class="modal fade" id="editmodel{{ $value->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> Update</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
 
+
+                                <form action="{{ url('category-update') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+
+                                    <input type="hidden" id="" name="id" value="{{ @$value->id }}">
+                                    <label for="name"> Category Name:</label>
+
+                                    <br>
+                                    <input type="text" id="" name="cat_name" value="{{ @$value->cat_name }}"
+                                        placeholder="Title..">
+                                    <div>
+                                        @if ($errors->has('cat_name'))
+                                            <span class="text-danger">{{ $errors->first('cat_name') }}</span>
+                                        @endif
+                                    </div><br><br>
+                                    
+
+                                    <input type="submit" value="Submit">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            @php
+                $var = show_category();
+            @endphp
+            @foreach ($var as $value)
+                <div class="modal fade" id="deletemodel{{ $value->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle"> delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h2></h2>
+
+                                <form action="{{ url('category-delete') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <label for="name"> DO YOU WANT TO DELETE :</label><br>
+                                    <input type="hidden" id="" name="id" value="{{ $value->id }}"><br>
+                                    <input type="submit" value="confirm">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Product Table <small> </small></h2>
+                        <h2>  Category Table <small> </small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -94,67 +167,41 @@
 
                     <div class="x_content">
 
-                        <p> Product Table<code></code> </p>
+                        <p> Category Table<code></code> </p>
 
                         <div class="table-responsive">
                             <table class="table table-striped jambo_table bulk_action">
                                 <thead>
                                     <tr class="headings">
-
                                         <th class="column-title">S.NO. </th>
-                                        <th class="column-title"> Category</th>
-                                        <th class="column-title">Product </th>
-                                        <th class="column-title">Quantity </th>
-                                        <th class="column-title">Image </th>
-                                        <th class="column-title">Price </th>
-                                        <th class="column-title">Is-features </th>
-                                        <th class="column-title">Is-recommended </th>
+                                        <th class="column-title"> Name</th>
                                         <th class="column-title no-link last"><span class="nobr">Action</span>
                                         </th>
 
                                     </tr>
                                 </thead>
-
+                                @php
+                                    $var = show_category();
+                                @endphp
 
                                 <tbody>
                                     <?php $i = 0; ?>
-                                    @foreach ($product as $value)
+                                    @foreach ($var as $value)
                                         <?php $i++; ?>
                                         <tr class="even pointer">
 
                                             <td class=" ">{{ $i }}</td>
-                                            <td class=" ">{{ @$value->ShopCategory->cat_name }} </td>
-
-                                            <td class=" ">{{ @$value->product_name }}</td>
-                                            <td class=" ">{{ @$value->quantity }}</td>
-
-
-                                            <td class=" "><img src="{{ asset('/images/' . @$value->image) }}"
-                                                    alt="image" style="height: 30;width: 30px;"></td>
-                                            <td class=" ">{{ @$value->price }}</td>
-                                            <td class=" ">
-                                                @if ($value->is_features == 1)
-                                                    <span style="color:blue">Is Featuerd </span>
-                                                @else
-                                                    <span style="color:red">Not Featuerd </span>
-                                                @endif
-                                            </td>
-                                            <td class=" ">
-                                                @if ($value->is_recommanded == 1)
-                                                    <span style="color:blue"> Is Recommanded </span>
-                                                @else
-                                                    <span style="color:red">Not Recommanded </span>
-                                                @endif
-                                            </td>
+                                            <td class=" ">{{ @$value->cat_name }} </td>
 
                                             <td class=" last">
-                                                <a class="dropdown-item"
-                                                    onclick="return confirm('Do you really want to Edit Data?')"href="{{ route('product-edit', $value->id) }}"><i
+                                                <a class="dropdown-item" data-toggle="modal"
+                                                    data-target="#editmodel{{ $value->id }}"><i
                                                         class="fas fa-edit" style="font-size:20px;color:blue"></i>
                                                     Edit</a>
                                                 <a class="dropdown-item"
                                                     onclick="return confirm('Do you really want to Delete?')"
-                                                    href="{{ route('product-delete', $value->id) }}"><i
+                                                    data-toggle="modal"
+                                                    data-target="#deletemodel{{ $value->id }}"><i
                                                         class="fa fa-remove" style="font-size:20px;color:red"></i>
                                                     Delete</a>
 

@@ -123,6 +123,7 @@ class ApiController extends BaseController
       return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
+    $response_data = array('first_name' => $data['first_name'], 'last_name' => $data['last_name'], 'email' => $data['email'], 'password' => bcrypt($data['password']));
 
     $data_user = array('name' => $data['first_name'], 'first_name' => $data['first_name'], 'last_name' => $data['last_name'], 'email' => $data['email'], 'password' => bcrypt($data['password']));
 
@@ -133,7 +134,7 @@ class ApiController extends BaseController
     if ($user) {
 
       //return response()->json(array('status' => 'true', 'data' => $token, 'message' => 'User Register Successfully'));
-      return $this->sendResponse($data_user, 'User register successfully.');
+      return $this->sendResponse($response_data, 'User register successfully.');
       die();
     } else {
 

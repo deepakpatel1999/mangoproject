@@ -20,8 +20,8 @@ class CreateProductsTable extends Migration
       $table->string('quantity')->nullable();
       $table->text('image')->nullable();
       $table->string('price')->nullable();
-      $table->integer('is_features')->default(0);
-      $table->integer('is_recommanded')->default(0);
+      $table->string('is_features')->default(0);
+      $table->string('is_recommanded')->default(0);
       $table->timestamps();
     });
   }

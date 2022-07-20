@@ -158,6 +158,27 @@ Route::post('/e-shopper-banner-delete', [EshoperController::class, 'e_shopper_ba
 
 Route::get('/product-list', [EshoperController::class, 'product_list'])->name('product-list');
 
+Route::get('/add-product', [EshoperController::class, 'add_product'])->name('add-product');
+
+Route::post('/product-store', [EshoperController::class, 'product_store'])->name('product-store');
+
+Route::get('/product-delete/{id}', [EshoperController::class, 'product_delete'])->name('product-delete');
+
+Route::get('/product-edit/{id}', [EshoperController::class, 'product_edit'])->name('product-edit');
+
+Route::post('/product-update', [EshoperController::class, 'product_update'])->name('product-update');
+
+Route::get('/category-list', [EshoperController::class, 'category_list'])->name('category-list');
+
+Route::get('/add-category', [EshoperController::class, 'add_category'])->name('add-category');
+
+Route::post('/categrory-store', [EshoperController::class, 'categrory_store'])->name('categrory-store');
+
+Route::post('/category-update', [EshoperController::class, 'category_update'])->name('category-update');
+
+Route::post('/category-delete', [EshoperController::class, 'category_delete'])->name('category-delete');
+
+
 Route::group(['namespace' => 'Subscriptions'], function () {
     Route::get('plans', [App\Http\Controllers\Subscriptions\SubscriptionController::class, 'index'])->name('plans');
 
