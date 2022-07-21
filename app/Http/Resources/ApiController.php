@@ -42,9 +42,6 @@ use App\Http\Resources\Banner as BannerResource;
 use App\Http\Resources\FeaturItem as FeaterItemResource;
 use App\Http\Resources\ShopCategories as ShopCategoryResource;
 use App\Http\Resources\Shop_banner_show as Shop_banner_showResource;
-use App\Http\Resources\Show_banner as Show_bannerResource;
-use App\Http\Resources\AllProductShow as AllProductShowResource;
-
 
 
 
@@ -2788,7 +2785,7 @@ class ApiController extends BaseController
     if (is_null($data)) {
       return $this->sendError('Product not found.');
     }
-    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
     die();
   }
 
@@ -2801,7 +2798,7 @@ class ApiController extends BaseController
     if (is_null($data)) {
       return $this->sendError('Product not found.');
     }
-    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
     die();
   }
   //================  category_filter_product display====================//
@@ -2813,7 +2810,7 @@ class ApiController extends BaseController
     if (is_null($data)) {
       return $this->sendError('Product not found.');
     }
-    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
   }
   //================  recommended_filter_product display====================//
   public function recommended_filter_product()
@@ -2824,19 +2821,7 @@ class ApiController extends BaseController
     if (is_null($data)) {
       return $this->sendError('Product not found.');
     }
-    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    return $this->sendResponse(FeaterItemResource::collection($data), 'Posts fetched.');
     die();
-  }
-  //================  product_details display====================//
-  public function product_details($id)
-  {
-
-
-    $data = Product::find($id);
-
-    if (is_null($data)) {
-      return $this->sendError('Product not found.');
-    }
-    return $this->sendResponse(new AllProductShowResource($data), 'Product retrieved successfully.');
   }
 }

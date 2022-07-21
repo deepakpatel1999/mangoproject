@@ -48,12 +48,13 @@
                                             enctype="multipart/form-data">
 
                                             @csrf
-                                            <input type="hidden"  name="id" value="{{ $Product->id}}" class="form-control ">
+                                            <input type="hidden" name="id" value="{{ $Product->id }}"
+                                                class="form-control ">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Name*</label>
                                                 <input type="text" id="title" name="product_name"
-                                                    value="{{ $Product->product_name}}" placeholder="Enter product name"
-                                                    class="form-control product_name">
+                                                    value="{{ $Product->product_name }}"
+                                                    placeholder="Enter product name" class="form-control product_name">
                                             </div>
                                             <div>
                                                 @if ($errors->has('product_name'))
@@ -82,7 +83,7 @@
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Quantity*</label>
                                                 <input type="number" id="quantity" name="quantity"
-                                                    value="{{ $Product->quantity}}" placeholder="Enter quantity"
+                                                    value="{{ $Product->quantity }}" placeholder="Enter quantity"
                                                     class="form-control quantity">
                                             </div>
                                             <div>
@@ -94,29 +95,93 @@
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Image*</label>
                                                 <input type="file" placeholder="Enter image" id="file"
-                                                    value="{{ $Product->files}}" name="files" class="form-control">
+                                                    value="{{ $Product->files }}" name="files" class="form-control">
                                             </div>
-                                           
-                                          <img src="{{ asset('/images/' . @$Product->image) }}" alt="image"
-                                            style="height: 30;width: 30px;">
+
+                                            <img src="{{ asset('/images/' . @$Product->image) }}" alt="image"
+                                                style="height: 30;width: 30px;">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Price*</label>
                                                 <input type="text" placeholder="Enter price" id="price"
-                                                    value="{{ $Product->price}}" name="price" class="form-control">
+                                                    value="{{ $Product->price }}" name="price" class="form-control">
                                             </div>
                                             <div>
                                                 @if ($errors->has('price'))
                                                     <span class="text-danger">{{ $errors->first('price') }}</span>
                                                 @endif
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Web ID*</label>
+                                                <input type="text" placeholder="Enter Web_ID" id="Web_ID"
+                                                    value="{{ $Product->Web_ID }}" name="Web_ID"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Web_ID'))
+                                                    <span class="text-danger">{{ $errors->first('Web_ID') }}</span>
+                                                @endif
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Availability*</label>
+                                                <input type="text" placeholder="Enter Availability" id="Availability"
+                                                    value="{{ $Product->Availability }}" name="Availability"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Availability'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('Availability') }}</span>
+                                                @endif
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Condition*</label>
+                                                <input type="text" placeholder="Enter Condition" id="Condition"
+                                                    value="{{ $Product->Condition }}" name="Condition"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Condition'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('Condition') }}</span>
+                                                @endif
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Brand*</label>
+                                                <input type="text" placeholder="Enter Brand" id="Brand"
+                                                    value="{{ $Product->Brand }}" name="Brand"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Brand'))
+                                                    <span class="text-danger">{{ $errors->first('Brand') }}</span>
+                                                @endif
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">details*</label>
+                                                <input type="text" placeholder="Enter price" id="details"
+                                                    value="{{ $Product->details }}" name="details"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('details'))
+                                                    <span class="text-danger">{{ $errors->first('details') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Is-features*</label>
-                                                <input type="checkbox"  name="is_features" @if($Product->is_features == 1) checked @endif>
+                                                <input type="checkbox" name="is_features"
+                                                    @if ($Product->is_features == 1) checked @endif>
                                             </div>
                                             <div>
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Is-recommanded*</label>
-                                                    <input type="checkbox" name="is_recommanded" @if( $Product->is_recommanded == 1) checked @endif>
+                                                    <input type="checkbox" name="is_recommanded"
+                                                        @if ($Product->is_recommanded == 1) checked @endif>
                                                 </div>
 
                                                 <div>

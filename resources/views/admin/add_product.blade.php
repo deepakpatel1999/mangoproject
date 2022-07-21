@@ -55,18 +55,19 @@
                                                     class="form-control product_name">
                                             </div>
                                             <div>
-                                              @if ($errors->has('product_name'))
-                                                  <span class="text-danger">{{ $errors->first('product_name') }}</span>
-                                              @endif
-                                          </div>
+                                                @if ($errors->has('product_name'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('product_name') }}</span>
+                                                @endif
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="cat_id">Select Category</label>
                                                 <select name="cat_id" class="form-control">
                                                     <option value="">Select Category</option>
-                                                    @foreach($ShopCategory as $value)
-                                                      
-                                                    <option value="{{ @$value->id }}">{{ @$value->cat_name }}</option>
+                                                    @foreach ($ShopCategory as $value)
+                                                        <option value="{{ @$value->id }}">{{ @$value->cat_name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -85,8 +86,7 @@
                                             </div>
                                             <div>
                                                 @if ($errors->has('quantity'))
-                                                    <span
-                                                        class="text-danger">{{ $errors->first('quantity') }}</span>
+                                                    <span class="text-danger">{{ $errors->first('quantity') }}</span>
                                                 @endif
                                             </div>
 
@@ -102,29 +102,85 @@
                                             </div>
 
                                             <div class="form-group">
-                                              <label for="exampleInputEmail1">Price*</label>
-                                              <input type="text" placeholder="Enter price" id="price"
-                                                  value="{{ old('price') }}" name="price" class="form-control">
-                                          </div>
-                                          <div>
-                                              @if ($errors->has('price'))
-                                                  <span class="text-danger">{{ $errors->first('price') }}</span>
-                                              @endif
-                                          </div>
+                                                <label for="exampleInputEmail1">Price*</label>
+                                                <input type="text" placeholder="Enter price" id="price"
+                                                    value="{{ old('price') }}" name="price" class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('price'))
+                                                    <span class="text-danger">{{ $errors->first('price') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="form-group">
-                                              <label for="exampleInputEmail1">Is-features*</label>
-                                              <input type="checkbox" name="is_features" class="">
-                                          </div>
-                                          <div>
+                                                <label for="exampleInputEmail1">Web ID*</label>
+                                                <input type="text" placeholder="Enter Web ID" id="Web_ID"
+                                                    value="{{ old('Web_ID') }}" name="Web_ID" class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Web_ID'))
+                                                    <span class="text-danger">{{ $errors->first('Web_ID') }}</span>
+                                                @endif
+                                            </div>
                                             <div class="form-group">
-                                              <label for="exampleInputEmail1">Is-recommanded*</label>
-                                              <input type="checkbox"  name="is_recommanded" class="">
-                                          </div>
-                                        
-                                          <div>
-                                            <br>
-                                            <button type="submit" class="btn btn-primary"
-                                                value="submit">Submit</button>
+                                                <label for="exampleInputEmail1">Availability*</label>
+                                                <input type="text" placeholder="Enter Availability" id="Availability"
+                                                    value="{{ old('Availability') }}" name="Availability"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Availability'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('Availability') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Condition*</label>
+                                                <input type="text" placeholder="Enter Condition" id="Condition"
+                                                    value="{{ old('Condition') }}" name="Condition"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Condition'))
+                                                    <span
+                                                        class="text-danger">{{ $errors->first('Condition') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Brand*</label>
+                                                <input type="text" placeholder="Enter Brand" id="Brand"
+                                                    value="{{ old('Brand') }}" name="Brand"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('Brand'))
+                                                    <span class="text-danger">{{ $errors->first('Brand') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">details*</label>
+                                                <input type="text" placeholder="Enter details" id="details"
+                                                    value="{{ old('details') }}" name="details"
+                                                    class="form-control">
+                                            </div>
+                                            <div>
+                                                @if ($errors->has('details'))
+                                                    <span class="text-danger">{{ $errors->first('details') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Is-features*</label>
+                                                <input type="checkbox" name="is_features" class="">
+                                            </div>
+                                            <div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Is-recommanded*</label>
+                                                    <input type="checkbox" name="is_recommanded" class="">
+                                                </div>
+
+                                                <div>
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary"
+                                                        value="submit">Submit</button>
                                         </form>
                                     </div>
 

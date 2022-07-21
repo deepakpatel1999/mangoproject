@@ -22,6 +22,11 @@ class CreateProductsTable extends Migration
       $table->string('price')->nullable();
       $table->string('is_features')->default(0);
       $table->string('is_recommanded')->default(0);
+      $table->string('Web_ID:')->nullable();
+      $table->string('Availability')->nullable();
+      $table->string('Condition')->nullable();
+      $table->string('Brand')->nullable();
+      $table->string('details')->nullable();
       $table->timestamps();
     });
   }

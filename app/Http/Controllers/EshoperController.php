@@ -88,7 +88,7 @@ class EshoperController extends Controller
       $data = E_ShoperBanner::where('id', $id)->update(['title' => $request->title, 'description' => $request->description, 'updated_at' => $updated_at]);
     }
     if ($data) {
-      return back()->with('update-success', 'Data Update Successfully.');
+      return back()->with('update-success', 'Data    Successfully.');
     } else {
 
       return back()->with('failed', 'Something wrong.');
@@ -139,7 +139,12 @@ class EshoperController extends Controller
         'product_name' => 'required',
         'quantity' => 'required',
         'files' => 'required',
-        'price' => 'required'
+        'price' => 'required',
+        'Web_ID' => 'required',
+        'Availability' => 'required',
+        'Condition' => 'required',
+        'Brand' => 'required',
+        'details' => 'required'
 
       ],
       [
@@ -147,7 +152,12 @@ class EshoperController extends Controller
         'product_name.required' => 'Product Name is required',
         'quantity.required' => 'Quantity is required',
         'files.required' => 'Image is required',
-        'price.required' => 'Price is required'
+        'price.required' => 'Price is required',
+        'Web_ID.required' => 'Web ID is required',
+        'Availability.required' => 'Availability  is required',
+        'Condition.required' => 'Condition is required',
+        'Brand.required' => 'Brand is required',
+        'details.required' => 'details is required'
       ]
     );
 
@@ -171,7 +181,7 @@ class EshoperController extends Controller
       $imageName = 'test.png';
     }
     $created_at = date("Y-m-d H:i:s");
-    $data = Product::insert(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'image' => $imageName, 'price' => $request->price, 'is_features' => $is_features, 'is_recommanded' => $is_recommanded,  'created_at' => $created_at]);
+    $data = Product::insert(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'image' => $imageName, 'price' => $request->price, 'Web_ID' => $request->Web_ID, 'Availability' => $request->Availability, 'Condition' => $request->Condition, 'Brand' => $request->Brand, 'details' => $request->details,'is_features' => $is_features, 'is_recommanded' => $is_recommanded,  'created_at' => $created_at]);
     if ($data) {
       return redirect()->route('product-list')->with('success', 'Data Insert Successfully.');
     } else {
@@ -214,14 +224,23 @@ class EshoperController extends Controller
         'cat_id' => 'required',
         'product_name' => 'required',
         'quantity' => 'required',
-        'price' => 'required'
-
+        'price' => 'required',
+        'Web_ID' => 'required',
+        'Availability' => 'required',
+        'Condition' => 'required',
+        'Brand' => 'required',
+        'details' => 'required'
       ],
       [
         'cat_id.required' => 'Category is required',
         'product_name.required' => 'Product Name is required',
         'quantity.required' => 'Quantity is required',
-        'price.required' => 'Price is required'
+        'price.required' => 'Price is required',
+        'Web_ID.required' => 'Web ID is required',
+        'Availability.required' => 'Availability is required',
+        'Condition.required' => 'Condition is required',
+        'Brand.required' => 'Brand is required',
+        'details.required' => 'details is required'
       ]
     );
     $id = $request->id;
@@ -241,9 +260,9 @@ class EshoperController extends Controller
       $imageName = time() . '.' . $imagePath->getClientOriginalName();
       $destinationPath = public_path('/images');
       $imagePath->move($destinationPath, $imageName);
-      $data = Product::where('id', $id)->update(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'price' => $request->price, 'is_features' => $is_features, 'is_recommanded' => $is_recommanded, 'image' => $imageName, 'updated_at' => $updated_at]);
+      $data = Product::where('id', $id)->update(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'price' => $request->price, 'Web_ID' => $request->Web_ID, 'Availability' => $request->Availability, 'Condition' => $request->Condition, 'Brand' => $request->Brand, 'details' => $request->details, 'is_features' => $is_features, 'is_recommanded' => $is_recommanded, 'image' => $imageName, 'updated_at' => $updated_at]);
     } else {
-      $data = Product::where('id', $id)->update(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'price' => $request->price, 'is_features' => $is_features, 'is_recommanded' => $is_recommanded, 'updated_at' => $updated_at]);
+      $data = Product::where('id', $id)->update(['cat_id' => $request->cat_id, 'product_name' => $request->product_name, 'quantity' => $request->quantity, 'price' => $request->price, 'Web_ID' => $request->Web_ID, 'Availability' => $request->Availability, 'Condition' => $request->Condition, 'Brand' => $request->Brand, 'details' => $request->details, 'is_features' => $is_features, 'is_recommanded' => $is_recommanded, 'updated_at' => $updated_at]);
     }
     if ($data) {
       return redirect()->route('product-list')->with('update-success', 'Data Update Successfully.');

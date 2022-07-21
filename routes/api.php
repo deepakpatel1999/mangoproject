@@ -22,6 +22,19 @@ Route::post('/login', [ApiController::class, 'login'])->name('login');
 
 Route::post('/signup', [ApiController::class, 'signup'])->name('signup');
 
+//Get Product//
+Route::get('/shop-category', [ApiController::class, 'shop_category'])->name('shop-category');
+
+Route::get('/category-filter-product/{id}', [ApiController::class, 'category_filter_product'])->name('category-category');
+
+Route::get('/features-filter-product', [ApiController::class, 'features_filter_product'])->name('features-filter-category');
+
+Route::get('/all-product', [ApiController::class, 'all_product'])->name('all-product');
+
+Route::get('/recommended-filter-product', [ApiController::class, 'recommended_filter_product'])->name('recommended-filter-category');
+
+Route::get('/product-details/{id}', [ApiController::class, 'product_details'])->name('product-details');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::get('/inspirationp-get-data', [ApiController::class, 'inspiration_get_data'])->name('inspiration-get-data');
@@ -191,16 +204,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('polo-shirt-edit/{id}', [ApiController::class, 'polo_shirt_edit'])->name('polo-shirt-edit');
 
   Route::post('/polo-shirt-update', [ApiController::class, 'polo_shirt_update'])->name('polo-shirt-update');
-
-  //Get Product//
-  Route::get('/shop-category', [ApiController::class, 'shop_category'])->name('shop-category');
-
-  Route::get('/category-filter-product/{id}', [ApiController::class, 'category_filter_product'])->name('category-category');
-
-  Route::get('/features-filter-product', [ApiController::class, 'features_filter_product'])->name('features-filter-category');
-
-  Route::get('/all-product', [ApiController::class, 'all_product'])->name('all-product');
-
-  Route::get('/recommended-filter-product', [ApiController::class, 'recommended_filter_product'])->name('recommended-filter-category');
-
 });

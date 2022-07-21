@@ -109,6 +109,11 @@
                                         <th class="column-title">Price </th>
                                         <th class="column-title">Is-features </th>
                                         <th class="column-title">Is-recommended </th>
+                                        <th class="column-title">Web ID </th>
+                                        <th class="column-title">Availability </th>
+                                        <th class="column-title">Condition </th>
+                                        <th class="column-title">Brand </th>
+                                        <th class="column-title">Details </th>
                                         <th class="column-title no-link last"><span class="nobr">Action</span>
                                         </th>
 
@@ -146,7 +151,11 @@
                                                     <span style="color:red">Not Recommanded </span>
                                                 @endif
                                             </td>
-
+                                            <td class=" ">{{ @$value->Web_ID }}</td>
+                                            <td class=" ">{{ @$value->Availability }}</td>
+                                            <td class=" ">{{ @$value->Condition }}</td>
+                                            <td class=" ">{{ @$value->Brand }}</td>
+                                            <td class=" ">{{ @$value->details }}</td>
                                             <td class=" last">
                                                 <a class="dropdown-item"
                                                     onclick="return confirm('Do you really want to Edit Data?')"href="{{ route('product-edit', $value->id) }}"><i

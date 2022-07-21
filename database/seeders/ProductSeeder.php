@@ -23,6 +23,11 @@ class ProductSeeder extends Seeder
         'price' => '56',
         'is_features' => '0',
         'is_recommanded' => '1',
+        'Web_ID' => '1089772',
+        'Availability' => 'In Stock',
+        'Condition' => 'New',
+        'Brand' => 'E-SHOPPER',
+        'details' => 'This Is Shirt',
         
 
       ],
@@ -34,7 +39,11 @@ class ProductSeeder extends Seeder
         'price' => '56',
         'is_features' => '1',
         'is_recommanded' => '0',
-
+        'Web_ID' => '1089772',
+        'Availability' => 'In Stock',
+        'Condition' => 'New',
+        'Brand' => 'E-SHOPPER',
+        'details' => 'This Is Shirt',
 
       ],
     ];
