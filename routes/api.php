@@ -204,4 +204,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('polo-shirt-edit/{id}', [ApiController::class, 'polo_shirt_edit'])->name('polo-shirt-edit');
 
   Route::post('/polo-shirt-update', [ApiController::class, 'polo_shirt_update'])->name('polo-shirt-update');
+
+  Route::post('/add-to-card', [ApiController::class, 'add_to_card'])->name('add-to-card');
+
+  Route::post('/checkout', [ApiController::class, 'checkout'])->name('checkout');
+
+  Route::post('/payment-details', [ApiController::class, 'payment_details'])->name('payment-details');
+
+  Route::post('/card-display', [ApiController::class, 'card_display'])->name('card-display');
 });

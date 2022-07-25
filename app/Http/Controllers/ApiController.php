@@ -24,6 +24,10 @@ use App\Models\KidsData;
 use App\Models\PoloShirt;
 use App\Models\ShopCategory;
 use App\Models\Product;
+use App\Models\AddToCard;
+use App\Models\Order;
+use App\Models\BillingAddress;
+use App\Models\PaymentDetail;
 
 
 
@@ -2838,5 +2842,186 @@ class ApiController extends BaseController
       return $this->sendError('Product not found.');
     }
     return $this->sendResponse(new AllProductShowResource($data), 'Product retrieved successfully.');
+  }
+
+  //================ add_to_card data====================//
+  public function add_to_card(Request $request)
+  {
+    $rules = [
+      'user_id' => 'required',
+      'product_id' => 'required',
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['product_id'] = $request->product_id;
+
+    $validator = Validator::make($data, $rules);
+
+    $dataa['user_id'] = '';
+    $dataa['product_id'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+
+    if ($request->web_id != '') {
+      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id, 'web_id' => $request->web_id);
+      $user = AddToCard::create($data_user);
+    } else {
+      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id);
+      $user = AddToCard::create($data_user);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Add To Card Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => $data, 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================ checkout data====================//
+  public function checkout(Request $request)
+  {
+
+    $rules = [
+      'user_id' => 'required',
+      'address1' => 'required',
+
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['address1'] = $request->address1;
+    $data['payment_status'] = 'panding';
+    $data['status'] = 'panding';
+
+    $data['compony_name'] = $request->compony_name;
+    $data['email'] = $request->email;
+    $data['title'] =  $request->title;
+    $data['first_name'] = $request->first_name;
+    $data['middle_name'] = $request->middle_name;
+    $data['last_name'] = $request->last_name;
+    $data['address1'] = $request->address1;
+    $data['address2'] = $request->address2;
+    $data['zip_code'] = $request->zip_code;
+    $data['country'] = $request->country;
+    $data['state'] = $request->state;
+    $data['phone'] = $request->phone;
+    $data['mobile'] = $request->mobile;
+    $data['optional_address'] = $request->optional_address;
+
+    $validator = Validator::make($data, $rules);
+
+    // $data['user_id'] = '';
+    // $data['address1'] = '';
+    // $data['payment_status'] = '';
+    // $data['status'] = '';
+    // $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    $cart = AddToCard::where('user_id', $request->user_id)->get();
+    foreach ($cart as $carts) {
+      $user_id = $carts->user_id;
+      $product_id = $carts->product_id;
+      $cart_id = $carts->id;
+
+      $data_user = array('user_id' => $user_id, 'product_id' => $product_id, 'cart_id' => $cart_id, 'address' => $request->address1, 'payment_status' => 'panding', 'status' => 'panding');
+      $user = Order::create($data_user);
+    }
+    if ($request->optional_address != '') {
+      $data_user = array('user_id' => $request->user_id, 'compony_name' => $request->compony_name, 'email' => $request->email, 'title' => $request->title, 'first_name' => $request->first_name, 'middle_name' => $request->middle_name, 'last_name' => $request->last_name, 'address1' => $request->address1, 'address2' => $request->address2, 'zip_code' => $request->zip_code, 'country' => $request->country, 'state' => $request->state, 'phone' => $request->phone, 'mobile' => $request->mobile, 'optional_address' => $request->optional_address);
+      $user = BillingAddress::create($data_user);
+    } else {
+      $data_user = array('user_id' => $request->user_id, 'compony_name' => $request->compony_name, 'email' => $request->email, 'title' => $request->title, 'first_name' => $request->first_name, 'middle_name' => $request->middle_name, 'last_name' => $request->last_name, 'address1' => $request->address1, 'address2' => $request->address2, 'zip_code' => $request->zip_code, 'country' => $request->country, 'state' => $request->state, 'phone' => $request->phone, 'mobile' => $request->mobile);
+      BillingAddress::create($data_user);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Checkout Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================ payment_details data====================//
+  public function payment_details(Request $request)
+  {
+
+    $rules = [
+      'user_id' => 'required',
+      'card_name' => 'required',
+      'total_amount' => 'required',
+
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['card_name'] = $request->card_name;
+    $data['total_amount'] = $request->total_amount;;
+
+    $validator = Validator::make($data, $rules);
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    $cart = AddToCard::where('user_id', $request->user_id)->get();
+    foreach ($cart as $carts) {
+      $user_id = $carts->user_id;
+      $product_id = $carts->product_id;
+      $cart_id = $carts->cart_id;
+      $cart_id = $carts->id;
+
+      $data_user = array('payment_status' => 'online', 'status' => 'confirm');
+      $user = Order::where([['cart_id', $cart_id], ['user_id', $user_id]])->update($data_user);
+      AddToCard::where('id', $cart_id)->delete();
+    }
+    $data_user = array('user_id' => $request->user_id, 'card_name' => $request->card_name, 'payment_status' => 'online', 'total_amount' => $request->total_amount);
+    $user = PaymentDetail::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Checkout Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  card_display display====================//
+  public function card_display(Request $request)
+  {
+    $user_id = $request->user_id;
+
+    $data = AddToCard::join('products', 'add_to_cards.product_id', '=', 'products.id')->where('user_id', $user_id)->get(['products.*', 'add_to_cards.*']);
+    dd($data);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    die();
   }
 }

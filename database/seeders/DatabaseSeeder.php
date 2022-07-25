@@ -27,6 +27,10 @@ use Database\Seeders\KidsDataSeeder;
 use Database\Seeders\PoloShirtSeeder;
 use Database\Seeders\ProductSeeder;
 use Database\Seeders\ShopCategorySeeder;
+use Database\Seeders\AddToCardSeeder;
+use Database\Seeders\BillingAddressSeeder;
+use Database\Seeders\PaymentDetailSeeder;
+
 
 
 
@@ -64,6 +68,9 @@ class DatabaseSeeder extends Seeder
     $this->call(PoloShirtSeeder::class);
     $this->call(ProductSeeder::class);
     $this->call(ShopCategorySeeder::class);
+    $this->call(AddToCardSeeder::class);
+    $this->call(BillingAddressSeeder::class);
+    $this->call(PaymentDetailSeeder::class);
 
   }
 }
