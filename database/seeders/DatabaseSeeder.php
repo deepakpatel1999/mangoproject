@@ -30,8 +30,7 @@ use Database\Seeders\ShopCategorySeeder;
 use Database\Seeders\AddToCardSeeder;
 use Database\Seeders\BillingAddressSeeder;
 use Database\Seeders\PaymentDetailSeeder;
-
-
+use Database\Seeders\WishListSeeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -71,8 +70,6 @@ class DatabaseSeeder extends Seeder
     $this->call(AddToCardSeeder::class);
     $this->call(BillingAddressSeeder::class);
     $this->call(PaymentDetailSeeder::class);
-
+    $this->call(WishListSeeder::class);
   }
 }
-
-

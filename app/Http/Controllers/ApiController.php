@@ -28,8 +28,7 @@ use App\Models\AddToCard;
 use App\Models\Order;
 use App\Models\BillingAddress;
 use App\Models\PaymentDetail;
-
-
+use App\Models\WishList;
 
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -48,8 +47,9 @@ use App\Http\Resources\ShopCategories as ShopCategoryResource;
 use App\Http\Resources\Shop_banner_show as Shop_banner_showResource;
 use App\Http\Resources\Show_banner as Show_bannerResource;
 use App\Http\Resources\AllProductShow as AllProductShowResource;
-
-
+use App\Http\Resources\ShowCart as ShowCartResource;
+use App\Http\Resources\WishList as WishListResource;
+use App\Http\Resources\OrderList as OrderListResource;
 
 
 class ApiController extends BaseController
@@ -2850,10 +2850,14 @@ class ApiController extends BaseController
     $rules = [
       'user_id' => 'required',
       'product_id' => 'required',
+      'web_id' => 'required',
+      'quant' => 'required',
     ];
 
     $data['user_id'] = $request->user_id;
     $data['product_id'] = $request->product_id;
+    $data['web_id'] = $request->web_id;
+    $data['quant'] = $request->quant;
 
     $validator = Validator::make($data, $rules);
 
@@ -2869,14 +2873,36 @@ class ApiController extends BaseController
       return $this->sendError('Validation Error.', $validator->errors());
       die();
     }
+    $product = Product::where('id', $request->product_id)->first();
+    $quantity = $product->quantity;
+    if ($quantity < $request->quant) {
+      return response()->json(array('status' => 'false', 'data' => $quantity, 'message' => 'Your product quantity only' .    $quantity));
+    }
 
-    if ($request->web_id != '') {
-      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id, 'web_id' => $request->web_id);
-      $user = AddToCard::create($data_user);
+    $AddToCard = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+    if ($AddToCard != '') {
+      if ($request->quant_minus != '') {
+        $quantt = $AddToCard->quant;
+        $quanti = $request->quant;
+        $quant = $quantt - $quanti;
+        $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->update(['quant' => $quant]);
+        $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+        return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
+      }
+    }
+    if ($AddToCard != '') {
+      $quantt = $AddToCard->quant;
+      $quanti = $request->quant;
+      $quant = $quantt + $quanti;
+      $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->update(['quant' => $quant]);
+      $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+
+      return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
     } else {
-      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id);
+      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id, 'web_id' => $request->web_id, 'quant' => $request->quant);
       $user = AddToCard::create($data_user);
     }
+
     if ($user) {
 
       return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Add To Card Successfully'));
@@ -2884,7 +2910,7 @@ class ApiController extends BaseController
       die();
     } else {
 
-      return response()->json(array('status' => 'false', 'data' => $data, 'message' => 'Somthing went wrong'));
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
 
       die();
     }
@@ -3016,12 +3042,112 @@ class ApiController extends BaseController
     $user_id = $request->user_id;
 
     $data = AddToCard::join('products', 'add_to_cards.product_id', '=', 'products.id')->where('user_id', $user_id)->get(['products.*', 'add_to_cards.*']);
-    dd($data);
 
     if (is_null($data)) {
       return $this->sendError('Product not found.');
     }
-    return $this->sendResponse(AllProductShowResource::collection($data), 'Posts fetched.');
+    return $this->sendResponse(ShowCartResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================ cart_remove Delete=============//
+  public function cart_remove($id)
+  {
+    $id = $id;
+
+    $data = AddToCard::where('cart_id', $id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Cart Remove successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================ wishlist data====================//
+  public function wishlist(Request $request)
+  {
+    $rules = [
+      'user_id' => 'required',
+      'product_id' => 'required',
+
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['product_id'] = $request->product_id;
+
+    $validator = Validator::make($data, $rules);
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+
+    $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id);
+    $user = WishList::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data WishLIst add Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  wishlist_display ====================//
+  public function wishlist_display(Request $request)
+  {
+    $user_id = $request->user_id;
+
+    $data = WishList::join('products', 'wish_lists.product_id', '=', 'products.id')->where('user_id', $user_id)->get(['products.*', 'wish_lists.*']);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(WishListResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================ wishlist_remove Delete=============//
+  public function wishlist_remove($id)
+  {
+    $id = $id;
+
+    $data = WishList::where('wishlist_id', $id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'WishList Remove successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  order_list ====================//
+  public function order_list(Request $request)
+  {
+    $user_id = $request->user_id;
+
+    $data = Order::join('products', 'orders.product_id', '=', 'products.id')->where('user_id', $user_id)->get(['products.*', 'orders.*']);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(OrderListResource::collection($data), 'Posts fetched.');
     die();
   }
 }

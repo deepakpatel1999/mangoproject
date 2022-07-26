@@ -212,4 +212,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('/payment-details', [ApiController::class, 'payment_details'])->name('payment-details');
 
   Route::post('/card-display', [ApiController::class, 'card_display'])->name('card-display');
+
+  Route::get('/cart-remove/{id}', [ApiController::class, 'cart_remove'])->name('cart-remove');
+
+  Route::post('/wishlist', [ApiController::class, 'wishlist'])->name('wishlist');
+
+  Route::post('/wishlist-display', [ApiController::class, 'wishlist_display'])->name('wishlist-display');
+
+  Route::get('/wishlist-remove/{id}', [ApiController::class, 'wishlist_remove'])->name('wishlist-remove');
+
+  Route::post('/order-list', [ApiController::class, 'order_list'])->name('oreder-list');
 });

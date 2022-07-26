@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\WishList;
 use Illuminate\Database\Seeder;
-use App\Models\AddToCard;
 
-class AddToCardSeeder extends Seeder
+class WishListSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -16,23 +16,15 @@ class AddToCardSeeder extends Seeder
   {
     $plan = [
       [
-
         'user_id' => '1',
         'product_id' => '1',
-        'web_id' => '1089772',
-        'quant' => '1',
 
       ],
-      [
-        'user_id' => '1',
-        'product_id' => '1',
-        'web_id' => '1089772',
-        'quant' => '1',
-      ],
+
     ];
 
     foreach ($plan as $key => $value) {
-      AddToCard::create($value);
+      WishList::create($value);
     }
   }
 }
