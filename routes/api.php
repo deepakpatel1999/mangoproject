@@ -31,9 +31,23 @@ Route::get('/features-filter-product', [ApiController::class, 'features_filter_p
 
 Route::get('/all-product', [ApiController::class, 'all_product'])->name('all-product');
 
-Route::get('/recommended-filter-product', [ApiController::class, 'recommended_filter_product'])->name('recommended-filter-category');
+Route::get('/recommended-filter-product', [ApiController::class, 'recommended_filter_product'])->name('recommended-filter-product');
 
 Route::get('/product-details/{id}', [ApiController::class, 'product_details'])->name('product-details');
+
+//ustora API//
+Route::get('/ustora-all-product', [ApiController::class, 'ustora_all_product'])->name('ustora-all-product');
+
+Route::get('/ustora-category', [ApiController::class, 'ustora_category'])->name('ustora-category');
+
+Route::get('/ustora-product-details/{id}', [ApiController::class, 'ustora_product_details'])->name('ustora_product-details');
+
+Route::get('/top-seller-product', [ApiController::class, 'top_seller_product'])->name('top-seller-product');
+
+Route::get('/recently-view-product', [ApiController::class, 'recently_view_product'])->name('recently-view-product');
+
+Route::get('/top-new-product', [ApiController::class, 'top_new_product'])->name('top-new-product');
+
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 

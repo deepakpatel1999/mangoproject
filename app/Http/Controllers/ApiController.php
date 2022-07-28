@@ -29,6 +29,9 @@ use App\Models\Order;
 use App\Models\BillingAddress;
 use App\Models\PaymentDetail;
 use App\Models\WishList;
+//USRORA
+use App\Models\ProductUstora;
+use App\Models\CategoryUstora;
 
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -50,6 +53,9 @@ use App\Http\Resources\AllProductShow as AllProductShowResource;
 use App\Http\Resources\ShowCart as ShowCartResource;
 use App\Http\Resources\WishList as WishListResource;
 use App\Http\Resources\OrderList as OrderListResource;
+////USRORA
+use App\Http\Resources\Ustora_all_product as Ustora_all_productResource;
+use App\Http\Resources\UstoraCategory as UstoraCategoryResource;
 
 
 class ApiController extends BaseController
@@ -2879,14 +2885,14 @@ class ApiController extends BaseController
       return response()->json(array('status' => 'false', 'data' => $quantity, 'message' => 'Your product quantity only' .    $quantity));
     }
 
-    $AddToCard = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+    $AddToCard = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
     if ($AddToCard != '') {
       if ($request->quant_minus != '') {
         $quantt = $AddToCard->quant;
         $quanti = $request->quant;
         $quant = $quantt - $quanti;
-        $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->update(['quant' => $quant]);
-        $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+        $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->update(['quant' => $quant]);
+        $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
         return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
       }
     }
@@ -2894,8 +2900,8 @@ class ApiController extends BaseController
       $quantt = $AddToCard->quant;
       $quanti = $request->quant;
       $quant = $quantt + $quanti;
-      $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->update(['quant' => $quant]);
-      $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->product_id]])->first();
+      $user = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->update(['quant' => $quant]);
+      $quantdata = AddToCard::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
 
       return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
     } else {
@@ -3150,4 +3156,79 @@ class ApiController extends BaseController
     return $this->sendResponse(OrderListResource::collection($data), 'Posts fetched.');
     die();
   }
+
+  /********************ustora API*********************** */
+  //================  ustora_all_product display====================//
+
+  public function ustora_all_product()
+  {
+    $data = ProductUstora::get();
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+    die();
+  }
+
+  //================  ustora_category display====================//
+  public function ustora_category()
+  {
+
+    $data = CategoryUstora::get();
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(UstoraCategoryResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================  ustora_product_details display====================//
+  public function ustora_product_details($id)
+  {
+
+
+    $data = ProductUstora::find($id);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(new Ustora_all_productResource($data), 'Product retrieved successfully.');
+  }
+  //================  top_seller_product display====================//
+  public function top_seller_product()
+  {
+
+    $data = ProductUstora::get()->where('top_seller', 1);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+    die();
+  }
+   //================  recently_view_product display====================//
+   public function recently_view_product()
+   {
+ 
+     $data = ProductUstora::get()->where('recently_view', 1);
+ 
+     if (is_null($data)) {
+       return $this->sendError('Product not found.');
+     }
+     return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+     die();
+   }
+   //================  top_new_product display====================//
+   public function top_new_product()
+   {
+ 
+     $data = ProductUstora::get()->where('top_new', 1);
+ 
+     if (is_null($data)) {
+       return $this->sendError('Product not found.');
+     }
+     return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+     die();
+   }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShopCategories extends JsonResource
+class UstoraCategory extends JsonResource
 {
   /**
    * Transform the resource into an array.
@@ -17,8 +17,8 @@ class ShopCategories extends JsonResource
     //return parent::toArray($request);
     return [
       'id' => $this->id,
-      'name' => $this->cat_name,
-     
+      'cat_name' => $this->cat_name,
+      'image' => asset('/images/' . $this->image),
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];

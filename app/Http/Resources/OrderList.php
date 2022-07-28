@@ -19,7 +19,7 @@ class OrderList extends JsonResource
       'id' => $this->id,
       'cat_id' => $this->cat_id,
       'product_name' => $this->product_name,
-      'banner' => asset('/images/' .$this->image),
+      'banner' => asset('/images/' . $this->image),
       'quantity' => $this->quantity,
       'price' => $this->price,
       'Web_ID' => $this->Web_ID,
@@ -27,16 +27,16 @@ class OrderList extends JsonResource
       'Condition' => $this->Condition,
       'Brand' => $this->Brand,
       'details' => $this->details,
-      
+
       'is_features' => $this->is_features,
       'is_recommanded' => $this->is_recommanded,
       'created_at' => $this->created_at,
-      'updated_at' => $this->updated_at ,
+      'updated_at' => $this->updated_at,
 
       'product_id' => $this->product_id,
       'payment_status' => $this->payment_status,
       'status' => $this->status,
-      'address' => $this->address ,
+      'address' => $this->address,
     ];
   }
 }

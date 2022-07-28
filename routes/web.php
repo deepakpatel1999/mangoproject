@@ -6,6 +6,8 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TrySomethingController;
 use App\Http\Controllers\EshoperController;
+use App\Http\Controllers\UstoraController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -177,6 +179,12 @@ Route::post('/categrory-store', [EshoperController::class, 'categrory_store'])->
 Route::post('/category-update', [EshoperController::class, 'category_update'])->name('category-update');
 
 Route::post('/category-delete', [EshoperController::class, 'category_delete'])->name('category-delete');
+
+//USTORA 
+Route::get('/ustora-product-list', [UstoraController::class, 'ustora_product_list'])->name('ustora-product-list');
+Route::get('/add-ustora-product', [UstoraController::class, 'add_ustora_product'])->name('add-ustora-product');
+Route::post('/ustoraproduct-store', [UstoraController::class, 'ustora_product_store'])->name('utoraproduct-store');
+Route::get('/ustoraproduct-delete/{id}', [UstoraController::class, 'ustoraproduct_delete'])->name('ustoraproduct-delete');
 
 
 Route::group(['namespace' => 'Subscriptions'], function () {
