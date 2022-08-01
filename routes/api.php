@@ -218,7 +218,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('polo-shirt-edit/{id}', [ApiController::class, 'polo_shirt_edit'])->name('polo-shirt-edit');
 
   Route::post('/polo-shirt-update', [ApiController::class, 'polo_shirt_update'])->name('polo-shirt-update');
-
+//add to cart
   Route::post('/add-to-card', [ApiController::class, 'add_to_card'])->name('add-to-card');
 
   Route::post('/checkout', [ApiController::class, 'checkout'])->name('checkout');
@@ -236,4 +236,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/wishlist-remove/{id}', [ApiController::class, 'wishlist_remove'])->name('wishlist-remove');
 
   Route::post('/order-list', [ApiController::class, 'order_list'])->name('oreder-list');
+
+  //ustora add to cart
+  Route::post('/add-to-card-ustora', [ApiController::class, 'add_to_card_ustora'])->name('add-to-card-ustora');
+
+  Route::post('/checkout-ustora', [ApiController::class, 'checkout_ustora'])->name('checkout-ustora');
+
+  Route::post('/payment-details-ustora', [ApiController::class, 'payment_details_ustora'])->name('payment-details-ustora');
+
+  Route::post('/card-display-ustora', [ApiController::class, 'card_display_ustora'])->name('card-display-ustora');
+
+  Route::get('/cart-remove-ustora/{id}', [ApiController::class, 'cart_remove_ustora'])->name('cart-remove-ustora');
+
+  Route::post('/order-list-ustora', [ApiController::class, 'order_list_ustora'])->name('oreder-list-ustora');
 });

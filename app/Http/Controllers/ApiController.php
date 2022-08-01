@@ -32,6 +32,10 @@ use App\Models\WishList;
 //USRORA
 use App\Models\ProductUstora;
 use App\Models\CategoryUstora;
+use App\Models\AddToCartUstora;
+use App\Models\BillingAddressUstora;
+use App\Models\OrderUstora;
+use App\Models\PaymentDetailUstora;
 
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\API\BaseController as BaseController;
@@ -56,6 +60,9 @@ use App\Http\Resources\OrderList as OrderListResource;
 ////USRORA
 use App\Http\Resources\Ustora_all_product as Ustora_all_productResource;
 use App\Http\Resources\UstoraCategory as UstoraCategoryResource;
+use App\Http\Resources\ShowCartUstora as ShowCartUstoraResource;
+use App\Http\Resources\OrderListUstora as OrderListUstoraResource;
+
 
 
 class ApiController extends BaseController
@@ -2935,7 +2942,6 @@ class ApiController extends BaseController
     $data['address1'] = $request->address1;
     $data['payment_status'] = 'panding';
     $data['status'] = 'panding';
-
     $data['compony_name'] = $request->compony_name;
     $data['email'] = $request->email;
     $data['title'] =  $request->title;
@@ -3207,28 +3213,258 @@ class ApiController extends BaseController
     return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
     die();
   }
-   //================  recently_view_product display====================//
-   public function recently_view_product()
-   {
- 
-     $data = ProductUstora::get()->where('recently_view', 1);
- 
-     if (is_null($data)) {
-       return $this->sendError('Product not found.');
-     }
-     return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
-     die();
-   }
-   //================  top_new_product display====================//
-   public function top_new_product()
-   {
- 
-     $data = ProductUstora::get()->where('top_new', 1);
- 
-     if (is_null($data)) {
-       return $this->sendError('Product not found.');
-     }
-     return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
-     die();
-   }
+  //================  recently_view_product display====================//
+  public function recently_view_product()
+  {
+
+    $data = ProductUstora::get()->where('recently_view', 1);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================  top_new_product display====================//
+  public function top_new_product()
+  {
+
+    $data = ProductUstora::get()->where('top_new', 1);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(Ustora_all_productResource::collection($data), 'Posts fetched.');
+    die();
+  }
+
+  //***********************add_to_card_ustora**************************** */
+  //================ add_to_card_ustora data====================//
+  public function add_to_card_ustora(Request $request)
+  {
+    $rules = [
+      'user_id' => 'required',
+      'product_id' => 'required',
+      'quant' => 'required',
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['product_id'] = $request->product_id;
+    $data['quant'] = $request->quant;
+    $validator = Validator::make($data, $rules);
+
+    $dataa['user_id'] = '';
+    $dataa['product_id'] = '';
+
+    $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    $product = ProductUstora::where('id', $request->product_id)->first();
+    $quantity = $product->quantity;
+    if ($quantity < $request->quant) {
+      return response()->json(array('status' => 'false', 'data' => $quantity, 'message' => 'Your product quantity only' .    $quantity));
+    }
+
+    $AddToCard = AddToCartUstora::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
+    if ($AddToCard != '') {
+      if ($request->quant_minus != '') {
+        $quantt = $AddToCard->quant;
+        $quanti = $request->quant;
+        $quant = $quantt - $quanti;
+        $user = AddToCartUstora::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->update(['quant' => $quant]);
+        $quantdata = AddToCartUstora::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
+        return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
+      }
+    }
+    if ($AddToCard != '') {
+      $quantt = $AddToCard->quant;
+      $quanti = $request->quant;
+      $quant = $quantt + $quanti;
+      $user = AddToCartUstora::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->update(['quant' => $quant]);
+      $quantdata = AddToCartUstora::where([['product_id', $request->product_id], ['user_id', $request->user_id]])->first();
+
+      return response()->json(array('status' => 'true', 'data' => $quantdata, 'message' => 'Data Add To Card Successfully'));
+    } else {
+      $data_user = array('user_id' => $request->user_id, 'product_id' => $request->product_id, 'quant' => $request->quant);
+      $user = AddToCartUstora::create($data_user);
+    }
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Add To Card Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================ checkout_ustora data====================//
+  public function checkout_ustora(Request $request)
+  {
+
+    $rules = [
+      'user_id' => 'required',
+      'address1' => 'required',
+
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['payment_status'] = 'panding';
+    $data['status'] = 'panding';
+    $data['compony_name'] = $request->compony_name;
+    $data['email'] = $request->email;
+    $data['first_name'] = $request->first_name;
+    $data['last_name'] = $request->last_name;
+    $data['address1'] = $request->address1;
+    $data['address2'] = $request->address2;
+    $data['zip_code'] = $request->zip_code;
+    $data['state'] = $request->state;
+    $data['phone'] = $request->phone;
+    $data['city'] = $request->city;
+    $data['optional_address'] = $request->optional_address;
+
+    $validator = Validator::make($data, $rules);
+
+    // $data['user_id'] = '';
+    // $data['address1'] = '';
+    // $data['payment_status'] = '';
+    // $data['status'] = '';
+    // $error_msg = '';
+
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    $cart = AddToCartUstora::where('user_id', $request->user_id)->get();
+    foreach ($cart as $carts) {
+      $user_id = $carts->user_id;
+      $product_id = $carts->product_id;
+      $cart_id = $carts->cart_id;
+
+      $data_user = array('user_id' => $user_id, 'product_id' => $product_id, 'cart_id' => $cart_id, 'address' => $request->address1, 'payment_status' => 'panding', 'status' => 'panding');
+      $user = OrderUstora::create($data_user);
+    }
+    if ($request->optional_address != '') {
+      $data_user = array('user_id' => $request->user_id, 'compony_name' => $request->compony_name, 'email' => $request->email, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'address1' => $request->address1, 'address2' => $request->address2, 'zip_code' => $request->zip_code, 'country' => $request->country, 'state' => $request->state, 'phone' => $request->phone, 'city' => $request->city, 'optional_address' => $request->optional_address);
+      $user = BillingAddressUstora::create($data_user);
+    } else {
+      $data_user = array('user_id' => $request->user_id, 'compony_name' => $request->compony_name, 'email' => $request->email, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'address1' => $request->address1, 'address2' => $request->address2, 'zip_code' => $request->zip_code, 'country' => $request->country, 'state' => $request->state, 'phone' => $request->phone, 'city' => $request->city);
+      BillingAddressUstora::create($data_user);
+    }
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Checkout Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================ payment_details_ustora data====================//
+  public function payment_details_ustora(Request $request)
+  {
+
+    $rules = [
+      'user_id' => 'required',
+      'card_name' => 'required',
+      'total_amount' => 'required',
+
+    ];
+
+    $data['user_id'] = $request->user_id;
+    $data['card_name'] = $request->card_name;
+    $data['total_amount'] = $request->total_amount;;
+
+    $validator = Validator::make($data, $rules);
+    $error_msg = $validator->errors()->first();
+
+    if ($validator->fails()) {
+      return $this->sendError('Validation Error.', $validator->errors());
+      die();
+    }
+    $cart = AddToCartUstora::where('user_id', $request->user_id)->get();
+    foreach ($cart as $carts) {
+      $user_id = $carts->user_id;
+      $product_id = $carts->product_id;
+      $cart_id = $carts->cart_id;
+      $cart_id = $carts->id;
+
+      $data_user = array('payment_status' => 'online', 'status' => 'confirm');
+      $user = Order::where([['cart_id', $cart_id], ['user_id', $user_id]])->update($data_user);
+      AddToCartUstora::where('cart_id', $cart_id)->delete();
+    }
+    $data_user = array('user_id' => $request->user_id, 'card_name' => $request->card_name, 'total_amount' => $request->total_amount);
+    $user = PaymentDetailUstora::create($data_user);
+
+    if ($user) {
+
+      return response()->json(array('status' => 'true', 'data' => $data, 'message' => 'Data Checkout Successfully'));
+
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'data' => '', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  card_display_ustora display====================//
+  public function card_display_ustora(Request $request)
+  {
+    $user_id = $request->user_id;
+
+    $data = AddToCartUstora::join('product_ustoras', 'add_to_cart_ustoras.product_id', '=', 'product_ustoras.id')->where('user_id', $user_id)->get(['product_ustoras.*', 'add_to_cart_ustoras.*']);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(ShowCartUstoraResource::collection($data), 'Posts fetched.');
+    die();
+  }
+  //================ cart_remove_ustora Delete=============//
+  public function cart_remove_ustora($id)
+  {
+    $id = $id;
+
+    $data = AddToCartUstora::where('cart_id', $id)->delete();
+
+    if ($data) {
+
+      return $this->sendResponse([], 'Cart Remove successfully.');
+      die();
+    } else {
+
+      return response()->json(array('status' => 'false', 'message' => 'Somthing went wrong'));
+
+      die();
+    }
+  }
+  //================  order_list_ustora ====================//
+  public function order_list_ustora(Request $request)
+  {
+    $user_id = $request->user_id;
+
+    $data = OrderUstora::join('product_ustoras', 'order_ustoras.product_id', '=', 'product_ustoras.id')->where('user_id', $user_id)->get(['product_ustoras.*', 'order_ustoras.*']);
+
+    if (is_null($data)) {
+      return $this->sendError('Product not found.');
+    }
+    return $this->sendResponse(OrderListUstoraResource::collection($data), 'Posts fetched.');
+    die();
+  }
 }

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\PaymentDetail;
+use App\Models\AddToCartUstora;
 
-class PaymentDetailSeeder extends Seeder
+class AddToCartUstoraSeeder extends Seeder
 {
   /**
    * Run the database seeds.
@@ -16,18 +16,21 @@ class PaymentDetailSeeder extends Seeder
   {
     $plan = [
       [
+
         'user_id' => '1',
-        'card_name' => 'abc',
-       
-        
-        'total_amount' => '65',
+        'product_id' => '1',
+        'quant' => '1',
 
       ],
-
+      [
+        'user_id' => '1',
+        'product_id' => '1',
+        'quant' => '1',
+      ],
     ];
 
     foreach ($plan as $key => $value) {
-      PaymentDetail::create($value);
+      AddToCartUstora::create($value);
     }
   }
 }

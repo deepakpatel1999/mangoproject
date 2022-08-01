@@ -33,6 +33,10 @@ use Database\Seeders\PaymentDetailSeeder;
 use Database\Seeders\WishListSeeder;
 use Database\Seeders\ProductUstoraSeeder;
 use Database\Seeders\CategoryUstoraSeeder;
+use Database\Seeders\AddToCartUstoraSeeder;
+use Database\Seeders\OrderUstoraSeeder;
+use Database\Seeders\BillingAddressUstoraSeeder;
+use Database\Seeders\PaymentDetailUstoraSeeder;
 
 
 
@@ -76,7 +80,13 @@ class DatabaseSeeder extends Seeder
     $this->call(WishListSeeder::class);
     $this->call(ProductUstoraSeeder::class);
     $this->call(CategoryUstoraSeeder::class);
+    $this->call(AddToCartUstoraSeeder::class);
+    $this->call(OrderUstoraSeeder::class);
 
+    $this->call(BillingAddressUstoraSeeder::class);
+    $this->call(PaymentDetailUstoraSeeder::class);
+
+    
     
   }
 }
